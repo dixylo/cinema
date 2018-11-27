@@ -93,12 +93,12 @@ export default function rooms (state, action) {
 // action creators
 export const initRooms = (rooms) => {
   return { type: INIT_ROOMS, rooms };
-}
+};
 
 export const updateSeat = (coor) => {
   return { type: UPDATE_SEAT, coor };
-}
+};
 
 export const orderSeats = (roomId) => {
   return { type: ORDER_SEATS, roomId }
-}
+};

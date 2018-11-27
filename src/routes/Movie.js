@@ -12,28 +12,23 @@ class Movie extends Component {
     const { match, movies } = this.props;
     const { movieId, roomId } = match.params;
     const theMovies = movies.filter(item => 
-      item.movieId === parseInt(movieId, 10)
+      item.movieId === movieId
     );
     const movie = theMovies[0];
 
     return (
-      <div className='container'>
+      <div className='detail'>
         <div className='panel'>
           <img alt={movie.name} src={movie.pic} style={{width: '100%'}} />
         </div>
-        <div className='panel detail'>
-          <h3>Name: {movie.name}</h3>
-          <hr/>
-          <h3>Director: {movie.directors}</h3>
-          <hr/>
-          <h3>Writers: {movie.writers}</h3>
-          <hr/>
-          <h3>Stars: {movie.stars}</h3>
-          <hr/>
-          <h3>Category: {movie.category}</h3>
-          <hr/>
-          <Link className='nav-item' to={`/booking/${movieId}/${roomId}`}>
-            <button>Buy Ticket</button>
+        <div className='metadata'>
+          <p><span>Name:</span> {movie.name}</p>
+          <p><span>Director:</span> {movie.directors}</p>
+          <p><span>Writers:</span> {movie.writers}</p>
+          <p><span>Stars:</span> {movie.stars}</p>
+          <p><span>Category:</span> {movie.category}</p>
+          <Link className='ticket-link' to={`/booking/${movieId}/${roomId}`}>
+            Buy Ticket&#x21E8;
           </Link>
         </div>
       </div>

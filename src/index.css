@@ -13,25 +13,30 @@ code {
     monospace;
 }
 
+.box-office {
+  margin: auto;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('./assets/cinema.jpg');
+  background-size: 100% 100%;
+}
+
 .room {
-  width: 950px;
-  height: 600px;
   position: relative;
-  border: 1px solid black;
+  top: 10.8%;
   margin: auto;
   background-color: white;
   opacity: 0.90;
-}
-
-.room h2 {
   text-align: center;
 }
 
 .seat {
-  width: 40px;
-  height: 50px;
   position: absolute;
   text-align: center;
+}
+
+.seat:hover {
+  background-color: #ccc;
 }
 
 .seat img {
@@ -40,7 +45,7 @@ code {
 
 .seat span {
   position: absolute;
-  font-size: 12px;
+  font-size: 50%;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -56,11 +61,19 @@ code {
   background-size: 100vw 100%;
 }
 
-.container {
+.home {
   margin: 50px auto;
+}
+
+.home h1 {
+  color: white;
+  text-align: center;
+}
+
+.movies {
+  margin: 0px auto;
   width: 1024px;
   overflow: auto;
-  /* border:1px solid green; */
 }
 
 .card {
@@ -70,10 +83,16 @@ code {
   transition: 0.3s;
   float: left;
   background-color: white;
+  transition: transform 0.2s;
 }
 
 .card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  transform: scale(1.02);
+}
+
+.card img {
+  width: 100%;
+  height: 444px;
 }
 
 .content {
@@ -108,8 +127,16 @@ code {
 .order-panel {
   float: left;
   padding: 20px;
-  background-color: white;
+  margin: 100px;
+  background-color: #dacb9d;
   opacity: 0.9;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.order-panel span {
+  font-size: 10px;
+  color: #333333;
 }
 
 .order-panel button {
@@ -139,30 +166,61 @@ code {
   color: white;
 }
 
-.box-office {
-  margin: auto;
-  width: 100%;
-  padding: 50px;
-  background-image: url('./assets/cinema.jpg');
-  background-size: 100vw 100vh;
-}
-
 .panel {
   width: 300px;
   height: 444px;
   margin: 10px 20px;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
+  left: 100px;
+  top: 100px;
   float: left;
-  background-color: white;  
 }
 
 .detail {
-  padding: 20px;
+  width: 1100px;
+  height: 610px;
+  padding-top: 60px;
+  padding-left: 150px;
+  background-image: url('./assets/film_strip.png');
+  background-size: 100%;
+  margin: 50px auto;
+  overflow: hidden;
 }
 
-.panel button {
-  padding: 5px;
+.ticket-link {
+  color: black;
+  float: right;
+  text-decoration: none;
+}
+
+.metadata {
+  width: 400px;
+  margin: 10px 0px;
+  font: 25px Courier New;
+  float: left;
+}
+
+.metadata span {
+  font-size: 15px;
+  color: #333333;
+}
+
+.about {
+  height: 100%;
+  padding: 100px 200px 200px;
+  background-image: url('./assets/curtained_screen.jpg');
+  background-size: 100vw 100%;
+}
+
+.about div {
+  width: 80%;
+  margin: 0px auto;
+  text-align: justify;
+}
+
+.about h1 {
+  text-align: center;
+}
+
+.about p, img {
   width: 100%;
-  border-radius: 5px;
 }

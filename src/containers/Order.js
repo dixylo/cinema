@@ -22,17 +22,22 @@ class OrderContainer extends Component {
   }
 
   render () {
-    const { movieId, roomId, rooms } = this.props;
-    const room_i = parseInt(this.props.roomId, 10) - 1;
+    const { movieId, movies, roomId, rooms } = this.props;
+    const movie_i = parseInt(movieId, 10) - 1;
+    const movieName = movies[movie_i].name;
+    const room_i = parseInt(roomId, 10) - 1;
     const room = {...{id: '1', rows: []}, ...rooms[room_i]};
     return (
-      <Order movieId={movieId} roomId={roomId} room={room} onConfirm={this.handleConfirm.bind(this)} />
+      <Order movieName={movieName} roomId={roomId} room={room} onConfirm={this.handleConfirm.bind(this)} />
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  return { rooms: state.rooms.rooms };
+  return {
+    movies: state.movies.movies,
+    rooms: state.rooms.rooms
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {

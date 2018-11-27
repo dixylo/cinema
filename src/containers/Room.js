@@ -19,7 +19,7 @@ class RoomContainer extends Component {
     roomId: '1'
   }
 
-  componentWillMount () {
+  componentDidMount () {
     // Initialize seat layout
     this._loadSeats();
   }
@@ -72,8 +72,8 @@ class RoomContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     rooms: state.rooms.rooms
-  }
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -83,7 +83,7 @@ const mapDispatchToProps = (dispatch) => {
     updateSeat: (coor) => {
       dispatch(updateSeat(coor));
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoomContainer);

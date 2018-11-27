@@ -11,8 +11,8 @@ class Movies extends Component {
 
   render() {
     return (
-      <div className='container'>
-        { this.props.movies.map((movie, i) => <Card key={i} {...movie} />) }
+      <div className='movies'>
+        {this.props.movies.map((movie, i) => <Card key={i} {...movie} />)}
       </div>
     )
   }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default class Order extends Component {
   static defaultProps = {
-    movieId: '1',
+    movieName: '',
     roomId: '1',
     room: {
       id: '1',
@@ -12,7 +12,7 @@ export default class Order extends Component {
   }
 
   static propTypes = {
-    movieId: PropTypes.string,
+    movieName: PropTypes.string,
     roomId: PropTypes.string,
     room: PropTypes.object
   }
@@ -24,12 +24,13 @@ export default class Order extends Component {
   }
 
   render () {
-    const { movieId, roomId, room } = this.props;
+    const { movieName, roomId, room } = this.props;
     let total = 0;
     return (
       <div className="order-panel">
-        <h4>Movie: {movieId}</h4>
-        <h4>Room: {roomId}</h4>
+        <p><span>Movie: </span>{movieName}</p>
+        <p><span>Room: </span>#{roomId}</p>
+        <hr />
         <table className="order-table">
           <thead>
             <tr>

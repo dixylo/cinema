@@ -4,10 +4,10 @@ import white from '../assets/white_chair.png';
 import red from '../assets/red_chair.png';
 import green from '../assets/green_chair.png';
 
-const ROOM_WIDTH = 950;
-const SEAT_WIDTH = 40;
-const SEAT_HEIGHT = 50;
-const OFFSET_TOP = 100;
+// const ROOM_WIDTH = 950;
+const SEAT_WIDTH = 30;
+const SEAT_HEIGHT = 37;
+// const OFFSET_TOP = 100;
 const BOOKED = 'booked';
 const CHOSEN = 'chosen';
 const VACANT = 'vacant';
@@ -49,14 +49,14 @@ export default class Seat extends Component {
   }
 
   render () {
-    const { id, coor, rowLen, status } = this.props;
-    let left = (coor.seat_i * SEAT_WIDTH + ROOM_WIDTH / 2 - rowLen * SEAT_WIDTH / 2).toString() + 'px';
-    let top = (coor.row_i * SEAT_HEIGHT + OFFSET_TOP).toString() + 'px';
+    const { id, coor, rowLen, status, roomSize } = this.props;
+    let left = (coor.seat_i * SEAT_WIDTH + roomSize.width / 2 - rowLen * SEAT_WIDTH / 2).toString() + 'px';
+    let top = (coor.row_i * SEAT_HEIGHT + 0.1 * roomSize.height).toString() + 'px';
     return (
       <div
         className="seat"
         onClick={this.handleClick.bind(this)}
-        style={{ left, top }}
+        style={{ left, top, width: SEAT_WIDTH, height: SEAT_HEIGHT }}
       >
         <img src={this._updateImage(status)} alt={status} />
         <span>{id}</span>
