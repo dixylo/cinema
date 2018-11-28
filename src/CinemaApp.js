@@ -11,7 +11,7 @@ class CinemaApp extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div className="bgHome"> 
+        <div className="background"> 
           <div className='header'>
             <Link className='nav-item' to='/'>Home</Link>
             <Link className='nav-item' to='/movies'>Movies</Link>

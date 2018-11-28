@@ -1,3 +1,4 @@
+/* Default Layout Starts */
 body {
   margin: 0;
   padding: 0;
@@ -13,6 +14,93 @@ code {
     monospace;
 }
 
+.background {
+  background-image: url('./assets/curtain.jpg');
+  background-size: 100vw 100%;
+}
+
+.header {
+  background-color: #3e3b49;
+  overflow: hidden;
+}
+
+.footer {
+  background-color: #3e3b49;
+  overflow: hidden;
+  text-align: center;
+  color: white;
+}
+
+.nav-item {
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: 20px;
+  text-align: center;
+  padding: 14px 26px;
+  display: inline-block;
+}
+/* Default Layout Ends */
+
+/* Home Page Starts */
+.home {
+  margin: 50px auto;
+}
+
+.home h1 {
+  color: white;
+  text-align: center;
+}
+/* Home Page Ends */
+
+/* Movies Page Starts */
+.movies {
+  margin: 0px auto;
+  width: 1024px;
+  overflow: auto;
+}
+/* Movies Page Ends */
+
+/* Movie Page Starts */
+.detail {
+  width: 1100px;
+  height: 610px;
+  padding-top: 60px;
+  padding-left: 150px;
+  background-image: url('./assets/film_strip.png');
+  background-size: 100%;
+  margin: 50px auto;
+  overflow: hidden;
+}
+
+.panel {
+  width: 300px;
+  height: 444px;
+  margin: 10px 20px;
+  left: 100px;
+  top: 100px;
+  float: left;
+}
+
+.metadata {
+  width: 400px;
+  margin: 10px 0px;
+  font: 25px Courier New;
+  float: left;
+}
+
+.metadata span {
+  font-size: 15px;
+  color: #333333;
+}
+
+.ticket-link {
+  color: black;
+  float: right;
+  text-decoration: none;
+}
+/* Movie Page Ends */
+
+/* Booking Page Starts */
 .box-office {
   margin: auto;
   width: 100vw;
@@ -54,74 +142,6 @@ code {
   -moz-user-select: none; /* Firefox 2+ */
   -ms-user-select: none; /* IE 10+ */
   user-select: none; /* Standard syntax */
-}
-
-.bgHome {
-  background-image: url('./assets/curtain.jpg');
-  background-size: 100vw 100%;
-}
-
-.home {
-  margin: 50px auto;
-}
-
-.home h1 {
-  color: white;
-  text-align: center;
-}
-
-.movies {
-  margin: 0px auto;
-  width: 1024px;
-  overflow: auto;
-}
-
-.card {
-  width: 300px;
-  margin: 10px 20px;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  float: left;
-  background-color: white;
-  transition: transform 0.2s;
-}
-
-.card:hover {
-  transform: scale(1.02);
-}
-
-.card img {
-  width: 100%;
-  height: 444px;
-}
-
-.content {
-  padding: 2px 16px;
-}
-
-.center {
-  text-align: center;
-}
-
-.header {
-  background-color: #3e3b49;
-  overflow: hidden;
-}
-
-.footer {
-  background-color: #3e3b49;
-  overflow: hidden;
-  text-align: center;
-  color: white;
-}
-
-.nav-item {
-  color: #f2f2f2;
-  text-decoration: none;
-  font-size: 20px;
-  text-align: center;
-  padding: 14px 26px;
-  display: inline-block;
 }
 
 .order-panel {
@@ -166,44 +186,28 @@ code {
   color: white;
 }
 
-.panel {
-  width: 300px;
-  height: 444px;
-  margin: 10px 20px;
-  left: 100px;
-  top: 100px;
-  float: left;
-}
-
-.detail {
-  width: 1100px;
-  height: 610px;
-  padding-top: 60px;
-  padding-left: 150px;
-  background-image: url('./assets/film_strip.png');
-  background-size: 100%;
-  margin: 50px auto;
-  overflow: hidden;
-}
-
-.ticket-link {
-  color: black;
-  float: right;
-  text-decoration: none;
-}
-
-.metadata {
-  width: 400px;
-  margin: 10px 0px;
-  font: 25px Courier New;
-  float: left;
-}
-
-.metadata span {
+.session-panel {
+  position: absolute;
+  top: 10%;
+  right: -50px;
+  padding: 20px;
+  margin: 100px;
+  background-color: #dacb9d;
+  opacity: 0.9;
+  border-radius: 5px;
   font-size: 15px;
-  color: #333333;
 }
 
+.session-panel input {
+  float: left;
+}
+
+.session-panel select {
+  float: right;
+}
+/* Booking Page Ends */
+
+/* About Page Starts */
 .about {
   height: 100%;
   padding: 100px 200px 200px;
@@ -224,3 +228,4 @@ code {
 .about p, img {
   width: 100%;
 }
+/* About Page Ends */

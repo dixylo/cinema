@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { initRooms, updateSeat } from '../reducers/rooms';
 import Room from '../components/Room';
-import layout from '../assets/cinema.xml';
+// import layout from '../assets/cinema.xml';
 
 class RoomContainer extends Component {
   static propTypes = {
@@ -27,30 +27,40 @@ class RoomContainer extends Component {
   _loadSeats () {
     // Load seats from XML
     // and pass it to Room in render
-    const xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", layout, false);
-		xmlhttp.send();
-		const xmlDoc = xmlhttp.responseXML;
-    const roomList = xmlDoc.getElementsByTagName("Room");
-    const rooms = [...roomList];
-	  const rmsLen = rooms.length;
-	  for (var k = 0; k < rmsLen; k++) {
-      const rowList = roomList[k].getElementsByTagName("Row");
-      rooms[k] = { id: k + 1, rows: [...rowList] };	    
-      const rwsLen = rowList.length;
-	    for (var j = 0; j < rwsLen; j++) {
-        const seatList = rowList[j].getElementsByTagName("Seat");
-        rooms[k].rows[j] = { id: j + 1, seats: [...seatList] };
-	      const stsLen = seatList.length;
-	      for (var i = 0; i < stsLen; i++) {
-          const id = seatList[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
-          const status = seatList[i].getElementsByTagName("Status")[0].childNodes[0].nodeValue;
-          const price = seatList[i].getElementsByTagName("Price")[0].childNodes[0].nodeValue;
-          rooms[k].rows[j].seats[i] = { id, status, price };
-	    	}
-	    }
-    }
-    this.props.initRooms(rooms);
+    // const xmlhttp = new XMLHttpRequest();
+    // xmlhttp.open("GET", layout, false);
+		// xmlhttp.send();
+		// const xmlDoc = xmlhttp.responseXML;
+    // const roomList = xmlDoc.getElementsByTagName("Room");
+    // const rooms = [...roomList];
+	  // const rmsLen = rooms.length;
+	  // for (var k = 0; k < rmsLen; k++) {
+    //   const rowList = roomList[k].getElementsByTagName("Row");
+    //   rooms[k] = { id: k + 1, rows: [...rowList] };	    
+    //   const rwsLen = rowList.length;
+	  //   for (var j = 0; j < rwsLen; j++) {
+    //     const seatList = rowList[j].getElementsByTagName("Seat");
+    //     rooms[k].rows[j] = { id: j + 1, seats: [...seatList] };
+	  //     const stsLen = seatList.length;
+	  //     for (var i = 0; i < stsLen; i++) {
+    //       const id = seatList[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
+    //       const status = seatList[i].getElementsByTagName("Status")[0].childNodes[0].nodeValue;
+    //       const price = seatList[i].getElementsByTagName("Price")[0].childNodes[0].nodeValue;
+    //       rooms[k].rows[j].seats[i] = { id, status, price };
+	  //   	}
+	  //   }
+    // }
+
+    // Load slides
+    fetch("https://cinema-react.firebaseio.com/cinema/rooms.json")
+    .then(response => response.json())
+    .then(rooms => this.props.initRooms(rooms));
+    // this.props.initRooms(rooms);
+    // var jsn = JSON.stringify({ rooms });
+    // fetch("https://cinema-react.firebaseio.com/cinema.json", {
+    //   method: 'PATCH',
+    //   body: jsn
+    // }).then(response => console.log(response.status)).catch(err => console.log(err));
   }
 
   handleSeatSelect (coor) {
