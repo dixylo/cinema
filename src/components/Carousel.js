@@ -21,7 +21,7 @@ const Arrow = ({ direction, onClick }) => (
 const Indicator = ({ number, currentIndex, onClick }) => (
   <div style={{ textAlign:'center' }}>{
     Array.from(Array(number).keys()).map((index) =>
-      <span className={`dot ${index === currentIndex ? 'active' : ''}`} onClick={() => { onClick(index); }}></span>
+      <span key={index} className={`dot ${index === currentIndex ? 'active' : ''}`} onClick={() => { onClick(index); }}></span>
     )}    
   </div>
 );

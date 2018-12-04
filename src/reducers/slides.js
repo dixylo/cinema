@@ -1,6 +1,6 @@
 const INIT_SLIDES = 'INIT_SLIDES';
 
-export default function movies (state, action) {
+export default function slides (state, action) {
   if (!state) {
     state = {
       slides: []

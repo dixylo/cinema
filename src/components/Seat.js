@@ -8,9 +8,9 @@ import green from '../assets/green_chair.png';
 const SEAT_WIDTH = 30;
 const SEAT_HEIGHT = 37;
 // const OFFSET_TOP = 100;
-const BOOKED = 'booked';
-const CHOSEN = 'chosen';
-const VACANT = 'vacant';
+const RESERVED = 'reserved';
+const SELECTED = 'selected';
+const AVAILABLE = 'available';
 
 export default class Seat extends Component {
   static defaultProps = {
@@ -19,7 +19,7 @@ export default class Seat extends Component {
       row_i: 0,
       seat_num: 0
     },
-    status: VACANT
+    status: AVAILABLE
   }
 
   static propTypes = {
@@ -37,11 +37,11 @@ export default class Seat extends Component {
 
   _updateImage (status) {
     switch (status) {
-      case BOOKED:
+      case RESERVED:
         return red;
-      case CHOSEN:
+      case SELECTED:
         return green;
-      case VACANT:
+      case AVAILABLE:
         return white;
       default:
         return;

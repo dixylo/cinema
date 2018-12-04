@@ -4,10 +4,12 @@ import Seat from '../components/Seat';
 
 const ROOM_WIDTH = 735;
 const ROOM_HEIGHT = 400;
+const DEFAULT_STATUS = "available";
 
 export default class Room extends Component {
   static propTypes = {
     room: PropTypes.object,
+    session: PropTypes.string,
     onSeatSelect: PropTypes.func
   }
 
@@ -15,7 +17,8 @@ export default class Room extends Component {
     room: {
       id: 1,
       rows: []
-    }
+    },
+    session: ''
   }
 
   handleSelect (coor) {
@@ -25,7 +28,7 @@ export default class Room extends Component {
   }
 
   render () {
-    const { room } = this.props;
+    const { room, session } = this.props;
     let seat_key = 0;
     const width = ROOM_WIDTH;
     const height = ROOM_HEIGHT;
@@ -37,13 +40,14 @@ export default class Room extends Component {
             const rowLen = row.seats.length;
             return row.seats.map(
               (seat, seat_i) => {
+                const status = seat.status[session] || DEFAULT_STATUS;
                 return (
                   <Seat
                     key={seat_key++}
                     id={seat.id}
                     coor={{ row_i, seat_i }}
                     rowLen={rowLen}
-                    status={seat.status}
+                    status={status}
                     roomSize = {{ width, height }}
                     onSelect={this.handleSelect.bind(this)}
                   />

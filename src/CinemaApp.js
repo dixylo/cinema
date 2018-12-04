@@ -1,23 +1,35 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { initUsers } from './reducers/users';
+import Header from './components/Header';
+import Footer from './components/Footer';
 import Home from './routes/Home';
 import Movies from './routes/Movies';
 import Booking from './routes/Booking';
 import Movie from './routes/Movie';
 import About from './routes/About';
 import Contact from './routes/Contact';
+import Register from './routes/Register';
+import Login from './routes/Login';
+import Profile from './routes/Profile';
 
 class CinemaApp extends Component {
+  componentDidMount () {
+    this._loadUsers();
+  }
+
+  _loadUsers () {
+    fetch("https://cinema-react.firebaseio.com/cinema/users.json")
+    .then(response => response.json())
+    .then(users => this.props.initUsers(users));
+  }
+
   render() {
     return (
       <BrowserRouter>
-        <div className="background"> 
-          <div className='header'>
-            <Link className='nav-item' to='/'>Home</Link>
-            <Link className='nav-item' to='/movies'>Movies</Link>
-            <Link className='nav-item' to='/about'>About</Link>
-            <Link className='nav-item' to='/contact'>Find us</Link>
-          </div>
+        <div>
+          <Header hasLoggedIn={this.props.hasLoggedIn} />
 
           <Route exact path='/' component={Home} />
           <Route exact path='/movies' component={Movies} />
@@ -25,14 +37,29 @@ class CinemaApp extends Component {
           <Route path='/movie/:movieId/:roomId' component={Movie}/>
           <Route exact path='/about' component={About} />
           <Route exact path='/contact' component={Contact} />
+          <Route exact path='/register' component={Register} />
+          <Route exact path='/login' component={Login} />
+          <Route exact path='/profile' component={Profile}/>
 
-          <div className="footer">
-		        <p>&copy;&nbsp;2018 Copyright by DIXYLO&trade;. All Rights Reserved.</p>
-          </div>
+          <Footer />
         </div>
       </BrowserRouter>
     );
   }
 }
 
-export default CinemaApp;
+const mapStateToProps = (state) => {
+  return {
+    hasLoggedIn: state.login.hasLoggedIn
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    initUsers: users => {
+      dispatch(initUsers(users));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CinemaApp);

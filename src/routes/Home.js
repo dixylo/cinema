@@ -38,7 +38,7 @@ class Home extends Component {
   render() {
     const { slides, movies } = this.props;
     return (
-      <div className="home">
+      <div className="container">
         <Carousel slides={slides} />
         <h1>Now Showing</h1>
         <div className='movies'>

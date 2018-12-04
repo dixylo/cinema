@@ -1,12 +1,10 @@
-// action types
 const INIT_ROOMS = 'INIT_ROOMS';
 const UPDATE_SEAT = 'UPDATE_SEAT';
-const ORDER_SEATS = 'ORDER_SEATS';
-const BOOKED = 'booked';
-const CHOSEN = 'chosen';
-const VACANT = 'vacant';
+const RESERVE_SEATS = 'RESERVE_SEATS';
+const RESERVED = 'reserved';
+const SELECTED = 'selected';
+const AVAILABLE = 'available';
 
-// reducer
 export default function rooms (state, action) {
   if (!state) {
     state = { rooms: [] }
@@ -15,11 +13,10 @@ export default function rooms (state, action) {
   const { rooms } = state;
   switch (action.type) {
     case INIT_ROOMS:
-      // Initialize rooms
       return { rooms: action.rooms };
     case UPDATE_SEAT:
-      // Update a seat
       const { room_i, row_i, seat_i } = action.coor;
+      let { session } = action.coor;
       return {
         rooms: rooms.map(
           (room, rm_i) => {
@@ -33,20 +30,26 @@ export default function rooms (state, action) {
                         ...row,
                         seats: row.seats.map(
                           (seat, st_i) => {
-                            if (st_i === seat_i) {
-                              switch (seat.status) {
-                                case BOOKED:
-                                  alert('You cannot select a booked seat!');
-                                  return seat;
-                                case CHOSEN:
-                                  return { ...seat, status: VACANT };
-                                case VACANT:
-                                  return { ...seat, status: CHOSEN };
-                                default:
-                                  return seat;
+                            if (seat.status[session]) {
+                              if (st_i === seat_i) {
+                                switch (seat.status[session]) {
+                                  case RESERVED:
+                                    alert('You cannot select a reserved seat!');
+                                    return seat;
+                                  case SELECTED:
+                                    return {...seat, status: {...seat.status, [session]: AVAILABLE}};
+                                  case AVAILABLE:
+                                    return {...seat, status: {...seat.status, [session]: SELECTED}};
+                                  default:
+                                    return seat;
+                                }
                               }
+                              return seat;
                             }
-                            return seat;
+                            if (st_i === seat_i) {
+                              return {...seat, status: {...seat.status, [session]: SELECTED}};
+                            }
+                            return {...seat, status: {...seat.status, [session]: AVAILABLE}};
                           }
                         )
                       }
@@ -60,31 +63,47 @@ export default function rooms (state, action) {
           }
         )
       }
-    case ORDER_SEATS:
-      return {
+    case RESERVE_SEATS:
+      const { roomId } = action.order;
+      session = action.order.session;
+      const rm_i = parseInt(roomId, 10) - 1;
+      const ssn = session;
+      const newRooms = {
         rooms: rooms.map(
-          room => {
-            return {
-              ...room,
-              rows: room.rows.map(
-                row => {
-                  return {
-                    ...row,
-                    seats: row.seats.map(
-                      seat => {
-                        if (seat.status === CHOSEN) {
-                          return { ...seat, status: BOOKED };
+          (room, index) => {
+            if (index === rm_i) {
+              return {
+                ...room,
+                rows: room.rows.map(
+                  row => {
+                    return {
+                      ...row,
+                      seats: row.seats.map(
+                        seat => {
+                          if (seat.status[ssn]) {
+                            if (seat.status[ssn] === SELECTED) {
+                              return { ...seat, status: {...seat.status, [ssn]: RESERVED}};
+                            }
+                            return seat;
+                          }
+                          return {...seat, status: {...seat.status, [ssn]: AVAILABLE}};
                         }
-                        return seat;
-                      }
-                    )
+                      )
+                    }
                   }
-                }
-              )
+                )
+              }
             }
+            return room;
           }
         )
       };
+      const jsonRooms = JSON.stringify(newRooms);
+      fetch("https://cinema-react.firebaseio.com/cinema.json", {
+        method: 'PATCH',
+        body: jsonRooms
+      }).then(response => console.log(response.status)).catch(err => console.log(err));
+      return newRooms;
     default:
       return state;
   }
@@ -99,6 +118,6 @@ export const updateSeat = (coor) => {
   return { type: UPDATE_SEAT, coor };
 };
 
-export const orderSeats = (roomId) => {
-  return { type: ORDER_SEATS, roomId }
+export const reserveSeats = (order) => {
+  return { type: RESERVE_SEATS, order }
 };

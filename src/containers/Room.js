@@ -10,13 +10,15 @@ class RoomContainer extends Component {
     movieId: PropTypes.string,
     roomId: PropTypes.string,
     rooms: PropTypes.array,
+    session: PropTypes.string,
     initRooms: PropTypes.func,
     updateSeat: PropTypes.func
   }
   
   static defaultProps = {
     movieId: '1',
-    roomId: '1'
+    roomId: '1',
+    session: ''
   }
 
   componentDidMount () {
@@ -25,8 +27,8 @@ class RoomContainer extends Component {
   }
 
   _loadSeats () {
-    // Load seats from XML
-    // and pass it to Room in render
+    // // Load seats from XML
+    // // and pass it to Room in render
     // const xmlhttp = new XMLHttpRequest();
     // xmlhttp.open("GET", layout, false);
 		// xmlhttp.send();
@@ -44,37 +46,42 @@ class RoomContainer extends Component {
 	  //     const stsLen = seatList.length;
 	  //     for (var i = 0; i < stsLen; i++) {
     //       const id = seatList[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
-    //       const status = seatList[i].getElementsByTagName("Status")[0].childNodes[0].nodeValue;
+    //       //const status = seatList[i].getElementsByTagName("Status")[0].childNodes[0].nodeValue;
     //       const price = seatList[i].getElementsByTagName("Price")[0].childNodes[0].nodeValue;
-    //       rooms[k].rows[j].seats[i] = { id, status, price };
+    //       rooms[k].rows[j].seats[i] = { id, status: '', price };
 	  //   	}
 	  //   }
     // }
-
-    // Load slides
-    fetch("https://cinema-react.firebaseio.com/cinema/rooms.json")
-    .then(response => response.json())
-    .then(rooms => this.props.initRooms(rooms));
     // this.props.initRooms(rooms);
     // var jsn = JSON.stringify({ rooms });
     // fetch("https://cinema-react.firebaseio.com/cinema.json", {
     //   method: 'PATCH',
     //   body: jsn
     // }).then(response => console.log(response.status)).catch(err => console.log(err));
+
+    // Load seats from firebase
+    fetch("https://cinema-react.firebaseio.com/cinema/rooms.json")
+    .then(response => response.json())
+    .then(rooms => this.props.initRooms(rooms));
   }
 
   handleSeatSelect (coor) {
-    const room_i = parseInt(this.props.roomId, 10) - 1;
-    coor = { ...coor, room_i };
-    this.props.updateSeat(coor);
+    const { roomId, session, updateSeat } = this.props;
+    const room_i = parseInt(roomId, 10) - 1;
+    coor = { ...coor, room_i, session };
+    updateSeat(coor);
   }
 
   render () {
-    const { roomId, rooms } = this.props;
+    const { roomId, rooms, session } = this.props;
     const room_i = parseInt(roomId, 10) - 1;
     const room = rooms[room_i];
     return (
-      <Room room={room} onSeatSelect={this.handleSeatSelect.bind(this)} />
+      <Room
+        room={room}
+        session={session}
+        onSeatSelect={this.handleSeatSelect.bind(this)}
+      />
     );
   }
 }
