@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 import firebase from 'firebase/app';
-import reducer from './reducers/index';
+import rootReducer from './reducers/index';
 import './index.css';
 import CinemaApp from './CinemaApp';
 import * as serviceWorker from './serviceWorker';
 
-const store = createStore(reducer);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 var config = {
   apiKey: "AIzaSyDmxrLYFCGu2LStoMvDcKxCMTbohn2FRaU",

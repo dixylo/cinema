@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { initMovies } from '../reducers/movies';
-import { initSlides } from '../reducers/slides';
 import Carousel from '../components/Carousel';
 import { Card } from '../components/Card';
+import { fetchMovies } from '../reducers/movies';
+import { fetchSlides } from '../reducers/slides';
 import '../index.css';
 
 class Home extends Component {
@@ -21,18 +21,8 @@ class Home extends Component {
   }
 
   componentDidMount () {
-    this._loadPosters();
-  }
-
-  _loadPosters () {
-    // Load slides
-    fetch("https://cinema-react.firebaseio.com/cinema/slides.json")
-    .then(response => response.json())
-    .then(slides => this.props.initSlides(slides));
-    // Load movies
-    fetch("https://cinema-react.firebaseio.com/cinema/movies.json")
-    .then(response => response.json())
-    .then(movies => this.props.initMovies(movies));
+    this.props.initSlides();
+    this.props.initMovies();
   }
 
   render() {
@@ -59,11 +49,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initSlides: (slides) => {
-      dispatch(initSlides(slides));
+    initSlides: () => {
+      dispatch(fetchSlides());
     },
-    initMovies: (movies) => {
-      dispatch(initMovies(movies));
+    initMovies: () => {
+      dispatch(fetchMovies());
     }
   };
 };

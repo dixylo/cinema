@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { initUsers } from './reducers/users';
+import { fetchUsers } from './reducers/users';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './routes/Home';
@@ -16,13 +16,7 @@ import Profile from './routes/Profile';
 
 class CinemaApp extends Component {
   componentDidMount () {
-    this._loadUsers();
-  }
-
-  _loadUsers () {
-    fetch("https://cinema-react.firebaseio.com/cinema/users.json")
-    .then(response => response.json())
-    .then(users => this.props.initUsers(users));
+    this.props.initUsers();
   }
 
   render() {
@@ -56,8 +50,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initUsers: users => {
-      dispatch(initUsers(users));
+    initUsers: () => {
+      dispatch(fetchUsers());
     }
   };
 };

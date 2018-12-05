@@ -1,3 +1,5 @@
+import { load_rooms, reserve_seats } from '../services/api';
+
 const INIT_ROOMS = 'INIT_ROOMS';
 const UPDATE_SEAT = 'UPDATE_SEAT';
 const RESERVE_SEATS = 'RESERVE_SEATS';
@@ -98,11 +100,7 @@ export default function rooms (state, action) {
           }
         )
       };
-      const jsonRooms = JSON.stringify(newRooms);
-      fetch("https://cinema-react.firebaseio.com/cinema.json", {
-        method: 'PATCH',
-        body: jsonRooms
-      }).then(response => console.log(response.status)).catch(err => console.log(err));
+      reserve_seats(newRooms);
       return newRooms;
     default:
       return state;
@@ -121,3 +119,11 @@ export const updateSeat = (coor) => {
 export const reserveSeats = (order) => {
   return { type: RESERVE_SEATS, order }
 };
+
+export const fetchRooms = () => {
+  return dispatch => {
+    return load_rooms()
+    .then(response => response.json())
+    .then(rooms => dispatch(initRooms(rooms)));
+  }
+}
