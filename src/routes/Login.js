@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import icon from '../assets/icon.png';
 import { login, logout } from '../reducers/login';
+import { fetchOrders } from '../reducers/orders';
 
 class Login extends Component {
   constructor (props) {
@@ -20,14 +21,17 @@ class Login extends Component {
   handleLogin () {
     const users = this.props.users;
     const { username, password } = this.state;
+    let matchFound = false;
     users.forEach(
       user => {
         if (user.username === username && user.password === password) {
-          this.props.login({ username, password });
+          matchFound = true;
+          this.props.login(user);
           return;
         }
       }
     );
+    !matchFound && alert('Username or password not correct!');
   }
 
   handleLogout() {
@@ -77,6 +81,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     login: (user) => {
       dispatch(login(user));
+      dispatch(fetchOrders());
     },
     logout: () => {
       dispatch(logout());

@@ -5,6 +5,7 @@ export default function Login (state, action) {
   if (!state) {
     state = {
       user: {
+        userId: null,
         username: '',
         password: ''
       },
@@ -21,6 +22,7 @@ export default function Login (state, action) {
     case LOG_OUT:
       return {
         user: {
+          userId: null,
           username: '',
           password: ''
         },

@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Carousel from '../components/Carousel';
 import { Card } from '../components/Card';
-import { fetchMovies } from '../reducers/movies';
-import { fetchSlides } from '../reducers/slides';
 import '../index.css';
 
 class Home extends Component {
@@ -18,11 +16,6 @@ class Home extends Component {
   static defaultProps = {
     slides: [],
     movies: []
-  }
-
-  componentDidMount () {
-    this.props.initSlides();
-    this.props.initMovies();
   }
 
   render() {
@@ -47,15 +40,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    initSlides: () => {
-      dispatch(fetchSlides());
-    },
-    initMovies: () => {
-      dispatch(fetchMovies());
-    }
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps)(Home);

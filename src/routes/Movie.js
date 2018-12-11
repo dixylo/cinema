@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import CommentModule from '../containers/CommentModule';
 
 class Movie extends Component {
   static propTypes = {
@@ -11,10 +12,9 @@ class Movie extends Component {
   render() {
     const { match, movies } = this.props;
     const { movieId, roomId } = match.params;
-    const theMovies = movies.filter(item => 
+    const movie = movies.find(item => 
       item.movieId === movieId
     );
-    const movie = theMovies[0];
 
     return (
       <div className='container'>
@@ -33,6 +33,7 @@ class Movie extends Component {
             </Link>
           </div>
         </div>
+        <CommentModule movieId={movieId} />
       </div>
     )
   }

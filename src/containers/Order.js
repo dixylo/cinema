@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Order from '../components/Order';
-import { reserveSeats } from '../reducers/rooms';
-import { placeOrder } from '../reducers/users';
+import { reserveSeatsAsync } from '../reducers/rooms';
+import { addOrderAsync } from '../reducers/orders';
 
 class OrderContainer extends Component {
   static defaultProps = {
@@ -24,16 +24,12 @@ class OrderContainer extends Component {
   }
 
   handleConfirm (order) {
-    const { reserveSeats, currentUser } = this.props;
-    // const rm_i = parseInt(roomId, 10) - 1;
+    const { placeOrder, currentUser } = this.props;
     if (currentUser.hasLoggedIn) {
-      const user = currentUser.user;
-      const userOrder = { ...order, user };
-      reserveSeats(userOrder);
-      alert("Reservation Confirmed!");
+      const userId = currentUser.user.userId;
+      placeOrder(userId, order);
     } else {
       alert("Please log in to proceed.");
-      return;
     }
   }
 
@@ -65,9 +61,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    reserveSeats: (order) => {
-      dispatch(reserveSeats(order));
-      dispatch(placeOrder(order));
+    placeOrder: (userId, order) => {
+      dispatch(reserveSeatsAsync(order));
+      dispatch(addOrderAsync(userId, order));
     }
   }
 }

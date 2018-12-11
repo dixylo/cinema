@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchUsers } from './reducers/users';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './routes/Home';
@@ -13,9 +12,14 @@ import Contact from './routes/Contact';
 import Register from './routes/Register';
 import Login from './routes/Login';
 import Profile from './routes/Profile';
+import { fetchUsers } from './reducers/users';
+import { fetchMovies } from './reducers/movies';
+import { fetchSlides } from './reducers/slides';
 
 class CinemaApp extends Component {
   componentDidMount () {
+    this.props.initSlides();
+    this.props.initMovies();
     this.props.initUsers();
   }
 
@@ -52,6 +56,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     initUsers: () => {
       dispatch(fetchUsers());
+    },
+    initMovies: () => {
+      dispatch(fetchMovies());
+    },
+    initSlides: () => {
+      dispatch(fetchSlides());
     }
   };
 };

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addUser } from '../reducers/users';
+import { addUserAsync } from '../reducers/users';
 import icon from '../assets/icon.png';
 
 class Register extends Component {
@@ -19,7 +19,9 @@ class Register extends Component {
       alert("Neither username nor password can be blank!");
       return;
     }
-    const users = this.props.users;
+    const { users } = this.props;
+    const arrayKeys = Object.keys(users);
+    const userId = Math.max(...arrayKeys) + 1;
     users.forEach(
       user => {
         if (user.username === username) {
@@ -28,7 +30,7 @@ class Register extends Component {
         }
       }
     );
-    this.props.addUser({ username, password });
+    this.props.addUser({ userId, username, password });
     this.props.history.push('/login');
   }
 
@@ -36,7 +38,7 @@ class Register extends Component {
     return (
       <div className="user">
         <div className="user-panel">
-          <p><img alt='icon' src={icon}/><span><i>MilfordCinema</i></span></p>
+          <p><img alt='icon' src={icon}/><span><i>ilfordCinema</i></span></p>
           <form>
             <input
               type="text"
@@ -69,7 +71,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addUser: (user) => {
-      dispatch(addUser(user));
+      dispatch(addUserAsync(user));
     }
   };
 };

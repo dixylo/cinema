@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchRooms, updateSeat } from '../reducers/rooms';
+import { fetchRooms, toggleSeat } from '../reducers/rooms';
 import Room from '../components/Room';
 
 class RoomContainer extends Component {
@@ -11,7 +11,7 @@ class RoomContainer extends Component {
     rooms: PropTypes.array,
     session: PropTypes.string,
     initRooms: PropTypes.func,
-    updateSeat: PropTypes.func
+    toggleSeat: PropTypes.func
   }
   
   static defaultProps = {
@@ -25,10 +25,10 @@ class RoomContainer extends Component {
   }
 
   handleSeatSelect (coor) {
-    const { roomId, session, updateSeat } = this.props;
+    const { roomId, session, toggleSeat } = this.props;
     const room_i = parseInt(roomId, 10) - 1;
     coor = { ...coor, room_i, session };
-    updateSeat(coor);
+    toggleSeat(coor);
   }
 
   render () {
@@ -56,8 +56,8 @@ const mapDispatchToProps = (dispatch) => {
     initRooms: () => {
       dispatch(fetchRooms());
     },
-    updateSeat: (coor) => {
-      dispatch(updateSeat(coor));
+    toggleSeat: (coor) => {
+      dispatch(toggleSeat(coor));
     }
   };
 };

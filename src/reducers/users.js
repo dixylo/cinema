@@ -1,8 +1,8 @@
-import { load_users, add_user, place_order } from '../services/api';
+import { load_users, add_user, change_password } from '../services/api';
 
 const INIT_USERS = 'INIT_USERS';
 const ADD_USER = 'ADD_USER';
-const PLACE_ORDER = 'PLACE_ORDER';
+const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 
 export default function users (state, action) {
   if (!state) {
@@ -17,50 +17,63 @@ export default function users (state, action) {
     case INIT_USERS:
       return { users: action.users };
     case ADD_USER:
-      users.push(action.user);
-      add_user(users);
-      return { users };
-    case PLACE_ORDER:
-      const { user, movieName, session, roomId, selectedSeats, total } = action.order;
-      const order = { movieName, session, roomId, selectedSeats, total };
+      return { users: [...users, action.user] };
+    case CHANGE_PASSWORD:
+      const { userId, password } = action;
       return {
-        users: users.map((userItem, i) => {
-          if (userItem.username === user.username) {
-            place_order(i, order);
-            if (userItem.orders) {
-              const orders = userItem.orders;
-              const orderIndex = Object.keys(orders).length;
-              const neworders = { ...orders, [orderIndex]: order };
-              const newuseritem = {...userItem, orders: neworders};
-              return newuseritem;
-            } else {
-              return { ...userItem, orders: { order } }
-            }
-          }
-          return userItem;
-        })
+        users: [
+          ...users.slice(0, userId),
+          { ...users[userId], password },
+          ...users.slice(userId + 1)
+        ]
       };
     default:
       return state;
   }
 }
 
-export const initUsers = users => {
+export const initUsers = (users) => {
   return { type: INIT_USERS, users };
 };
 
-export const addUser = user => {
+export const addUser = (user) => {
   return { type: ADD_USER, user };
 };
 
-export const placeOrder = order => {
-  return { type: PLACE_ORDER, order}
-}
+export const changePassword = (userId, password) => {
+  return { type: CHANGE_PASSWORD, userId, password }
+};
 
 export const fetchUsers = () => {
-  return dispatch => {
+  return (dispatch) => {
     return load_users()
     .then(response => response.json())
     .then(users => dispatch(initUsers(users)));
   }
-}
+};
+
+export const addUserAsync = (user) => {
+  return (dispatch) => {
+    return add_user(user).then(
+      response => {
+        if (response.status === 200) {
+          dispatch(addUser(user));
+          alert('Signup Succeeded. You may log in to reserve a seat and leave a comment');
+        }
+      }
+    );
+  };
+};
+
+export const changePasswordAsync = (userId, password) => {
+  return (dispatch) => {
+    return change_password(userId, password).then(
+      response => {
+        if (response.status === 200) {
+          dispatch(changePassword(userId, password));
+          alert('Password Changed Successfully!');
+        }
+      }
+    );
+  };
+};
