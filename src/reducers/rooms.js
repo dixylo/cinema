@@ -1,8 +1,10 @@
-import { load_rooms, reserve_seats } from '../services/api';
+import { load_rooms, update_seats } from '../services/api';
+import { seatIdToIndices } from '../services/utils';
 
 const INIT_ROOMS = 'INIT_ROOMS';
 const TOGGLE_SEAT = 'TOGGLE_SEAT';
 const RESERVE_SEATS = 'RESERVE_SEATS';
+const CANCEL_RESERVATION = 'CANCEL_RESERVATION';
 const RESERVED = 'reserved';
 const SELECTED = 'selected';
 const AVAILABLE = 'available';
@@ -110,6 +112,51 @@ function updateRoomsWithReservedSeats (state, order) {
   return newRooms;
 }
 
+function updateRoomsWithCanceledReservation (state, order) {
+  const { rooms } = state;
+  const { roomId, session } = order;
+  const rm_i = parseInt(roomId, 10) - 1;
+  const newRooms = rooms.map(
+    (room, index) => {
+      if (index === rm_i) {
+        return {
+          ...room,
+          rows: room.rows.map(
+            row => {
+              return {
+                ...row,
+                seats: row.seats.map(
+                  seat => {
+                    if (seat.status[session]) {
+                      if (seat.status[session] === SELECTED) {
+                        return { ...seat, status: {...seat.status, [session]: RESERVED}};
+                      }
+                      return seat;
+                    }
+                    return {...seat, status: {...seat.status, [session]: AVAILABLE}};
+                  }
+                )
+              };
+            }
+          )
+        };
+      }
+      return room;
+    }
+  );
+  return newRooms;
+}
+
+function orderToCoordinates (order) {
+  const roomIndex = parseInt(order.roomId, 10) -1;
+  const coors = [];
+  order.selectedSeats.forEach(seat => {
+    const coor = { ...seatIdToIndices(seat), roomIndex, session: order.session};
+    coors.push(coor);
+  });
+  return coors;
+} 
+
 // action creators
 export const initRooms = (rooms) => {
   return { type: INIT_ROOMS, rooms };
@@ -121,6 +168,10 @@ export const toggleSeat = (coor) => {
 
 export const reserveSeats = (rooms) => {
   return { type: RESERVE_SEATS, rooms };
+};
+
+export const cancelReservation = (rooms) => {
+  return { type: CANCEL_RESERVATION, rooms};
 };
 
 export const fetchRooms = () => {
@@ -135,11 +186,28 @@ export const reserveSeatsAsync = (order) => {
   return (dispatch, getState) => {
     const state = getState().rooms;
     const rooms = updateRoomsWithReservedSeats(state, order);
-    return reserve_seats({ rooms }).then(
+    const coors = orderToCoordinates(order);
+    return update_seats(coors, RESERVED).then(
       response => {
         if (response.status === 200) {
           dispatch(reserveSeats(rooms));
           alert("Reservation Confirmed!");
+        }
+      }
+    );
+  };
+};
+
+export const cancelReservationAsync = (order) => {
+  return (dispatch, getState) => {
+    const state = getState().rooms;
+    const rooms = updateRoomsWithCanceledReservation(state, order);
+    const coors = orderToCoordinates(order);
+    return update_seats(coors, AVAILABLE).then(
+      response => {
+        if (response.status === 200) {
+          dispatch(cancelReservation(rooms));
+          alert("Reservation Canceled!");
         }
       }
     );

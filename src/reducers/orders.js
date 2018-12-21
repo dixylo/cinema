@@ -25,7 +25,7 @@ export default function (state, action) {
         }
       };
     case DELETE_ORDER:
-      delete orders[action.userId][action.orderIndex];
+      delete orders[action.userId][action.orderKey];
       const newOrders = { ...orders };
       return { orders: newOrders };
     default:
@@ -42,8 +42,8 @@ export const addOrder = (userId, key, order) => {
   return { type: ADD_ORDER, userId, key, order };
 };
 
-export const deleteOrder = (userId, orderIndex) => {
-  return { type: DELETE_ORDER, userId, orderIndex };
+export const deleteOrder = (userId, orderKey) => {
+  return { type: DELETE_ORDER, userId, orderKey };
 };
 
 export const fetchOrders = () => {
@@ -55,19 +55,19 @@ export const fetchOrders = () => {
 };
 
 export const addOrderAsync = (userId, order) => {
-  return dispatch => {
+  return (dispatch) => {
     return add_order(userId, order)
       .then(response => response.json())
       .then(key => dispatch(addOrder(userId, key, order)));
   };
 };
 
-export const deleteOrderAsync = (userId, orderIndex) => {
-  return dispatch => {
-    return delete_order(userId, orderIndex).then(
-      response => {
+export const deleteOrderAsync = (userId, orderKey) => {
+  return (dispatch) => {
+    return delete_order(userId, orderKey).then(
+      (response) => {
         if (response.status === 200) {
-          dispatch(deleteOrder(userId, orderIndex));
+          dispatch(deleteOrder(userId, orderKey));
         }
       }
     );

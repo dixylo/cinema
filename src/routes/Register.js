@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addUserAsync } from '../reducers/users';
-import icon from '../assets/icon.png';
 
 class Register extends Component {
   state = {
@@ -9,11 +8,15 @@ class Register extends Component {
     password: ''
   }
 
+  componentDidMount () {
+    this.input.focus();
+  }
+
   handleFormChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleLogin () {
+  handleSignup () {
     const { username, password } = this.state;
     if (username === '' || password === '') {
       alert("Neither username nor password can be blank!");
@@ -24,7 +27,7 @@ class Register extends Component {
     const userId = Math.max(...arrayKeys) + 1;
     users.forEach(
       user => {
-        if (user.username === username) {
+        if (user.username.toLowerCase() === username.toLowerCase()) {
           alert("Username already exists. Please select another one!");
           return;
         }
@@ -38,24 +41,33 @@ class Register extends Component {
     return (
       <div className="user">
         <div className="user-panel">
-          <p><img alt='icon' src={icon}/><span><i>ilfordCinema</i></span></p>
-          <form>
+          <p>MILFORD CINEMA</p>
+          <hr className='user-panel-hr' />
+          <div className='user-panel-div'>
+            <label htmlFor='username'>USERNAME</label>
             <input
+              ref={(input) => this.input = input}
               type="text"
               name="username"
-              placeholder="Username"
+              className='user-panel-input'
               value={this.state.username}
               onChange={this.handleFormChange.bind(this)}
             />
+            <label htmlFor='password'>PASSWORD</label>
             <input
               type="password"
               name="password"
-              placeholder="Password"
+              className='user-panel-input'
               value={this.state.password}
               onChange={this.handleFormChange.bind(this)}
             />
-            <button type="button" onClick={this.handleLogin.bind(this)}>Sign up</button>
-          </form>
+            <button
+              className='user-panel-button'
+              onClick={this.handleSignup.bind(this)}
+            >
+              Sign up
+            </button>
+          </div>
         </div>
       </div>
     );

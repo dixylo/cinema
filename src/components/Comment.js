@@ -62,11 +62,12 @@ class Comment extends Component {
 
   render () {
     const { currentUser, comment } = this.props;
-    const isCurrentUsersComment = currentUser === comment.username;
+    const isCurrentUsersCommentOrAdminBrowsing
+    = currentUser === comment.username || currentUser === 'Admin';
     return (
       <div className='comment'>
         <div className='comment-user'>
-          <span>{comment.username}</span>:&nbsp;
+          <span><b>{comment.username}</b></span>:&nbsp;
         </div>
         <p dangerouslySetInnerHTML={{
           __html: this._getProcessedContent(comment.content)
@@ -74,15 +75,13 @@ class Comment extends Component {
         <span className='comment-postTime'>
           {this.state.timeString}
         </span>
-        {
-          isCurrentUsersComment &&
+          {isCurrentUsersCommentOrAdminBrowsing &&
           <span
             onClick={this.handleDeleteComment.bind(this)}
             className='comment-delete'
           >
             Delete
-          </span>
-        }
+          </span>}
       </div>
     );
   }

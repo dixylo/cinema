@@ -6,13 +6,12 @@ import { addCommentAsync } from '../reducers/comments';
 
 class CommentInputContainer extends Component {
   static propTypes = {
-    // comments: PropTypes.array,
     onSubmit: PropTypes.func
   };
 
   handleSubmitComment (comment) {
     const { currentUser, movieId, onSubmit } = this.props;
-    if (!currentUser.hasLoggedIn) {
+    if (!currentUser.hasUserLoggedIn) {
       alert("Please log in to comment.");
       return;
     }

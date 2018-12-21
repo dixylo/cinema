@@ -4,7 +4,7 @@ import './Carousel.css';
 const Slide = ({ slide, style }) => {
   return (
     <div className="slides fade" style={style}>
-      <img alt={slide.name} src={slide.url} />
+      <img alt={slide.name} src={slide.landscape} />
     </div>
   );
 };

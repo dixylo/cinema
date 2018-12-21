@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import slides from './slides';
 import movies from './movies';
 import rooms from './rooms';
 import users from './users';
@@ -8,7 +7,6 @@ import comments from './comments';
 import orders from './orders';
 
 export default combineReducers({
-  slides,
   movies,
   rooms,
   users,

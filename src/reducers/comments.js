@@ -25,7 +25,7 @@ export default function (state, action) {
         }
       };
     case DELETE_COMMENT:
-      delete comments[action.movieId][action.commentIndex];
+      delete comments[action.movieId][action.commentKey];
       const newComments = { ...comments };
       return { comments: newComments };
     default:
@@ -42,12 +42,12 @@ export const addComment = (movieId, key, comment) => {
   return { type: ADD_COMMENT, movieId, key, comment };
 };
 
-export const deleteComment = (movieId, commentIndex) => {
-  return { type: DELETE_COMMENT, movieId, commentIndex };
+export const deleteComment = (movieId, commentKey) => {
+  return { type: DELETE_COMMENT, movieId, commentKey };
 };
 
 export const fetchComments = () => {
-  return dispatch => {
+  return (dispatch) => {
     return load_comments()
       .then(response => response.json())
       .then(comments => dispatch(initComments(comments)));
@@ -55,19 +55,19 @@ export const fetchComments = () => {
 };
 
 export const addCommentAsync = (movieId, comment) => {
-  return dispatch => {
+  return (dispatch) => {
     return add_comment(movieId, comment)
       .then(response => response.json())
       .then(key => dispatch(addComment(movieId, key, comment)));
   };
 };
 
-export const deleteCommentAsync = (movieId, commentIndex) => {
-  return dispatch => {
-    return delete_comment(movieId, commentIndex).then(
-      response => {
+export const deleteCommentAsync = (movieId, commentKey) => {
+  return (dispatch) => {
+    return delete_comment(movieId, commentKey).then(
+      (response) => {
         if (response.status === 200) {
-          dispatch(deleteComment(movieId, commentIndex));
+          dispatch(deleteComment(movieId, commentKey));
         }
       }
     );

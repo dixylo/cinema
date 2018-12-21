@@ -46,8 +46,8 @@ const mapDispatchToProps = (dispatch) => {
     initComments: () => {
       dispatch(fetchComments())
     },
-    onDeleteComment: (movieId, commentIndex) => {
-      dispatch(deleteCommentAsync(movieId, commentIndex))
+    onDeleteComment: (movieId, commentKey) => {
+      dispatch(deleteCommentAsync(movieId, commentKey))
     }
   };
 };

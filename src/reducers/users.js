@@ -1,8 +1,9 @@
-import { load_users, add_user, change_password } from '../services/api';
+import { load_users, add_user, change_password, delete_user } from '../services/api';
 
 const INIT_USERS = 'INIT_USERS';
 const ADD_USER = 'ADD_USER';
 const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
+const DELETE_USER = 'DELETE_USER';
 
 export default function users (state, action) {
   if (!state) {
@@ -27,6 +28,10 @@ export default function users (state, action) {
           ...users.slice(userId + 1)
         ]
       };
+    case DELETE_USER:
+      delete users[action.userId];
+      const newUsers = { ...users };
+      return { users: newUsers };  
     default:
       return state;
   }
@@ -42,6 +47,10 @@ export const addUser = (user) => {
 
 export const changePassword = (userId, password) => {
   return { type: CHANGE_PASSWORD, userId, password }
+};
+
+export const deleteUser = (userId) => {
+  return { type: DELETE_USER, userId };
 };
 
 export const fetchUsers = () => {
@@ -68,7 +77,7 @@ export const addUserAsync = (user) => {
 export const changePasswordAsync = (userId, password) => {
   return (dispatch) => {
     return change_password(userId, password).then(
-      response => {
+      (response) => {
         if (response.status === 200) {
           dispatch(changePassword(userId, password));
           alert('Password Changed Successfully!');
@@ -77,3 +86,15 @@ export const changePasswordAsync = (userId, password) => {
     );
   };
 };
+
+export const deleteUserAsync = (userId) => {
+  return (dispatch) => {
+    return delete_user(userId).then(
+      (response) => {
+        if (response.status === 200) {
+          dispatch(deleteUser(userId));
+        }
+      }
+    );
+  }
+}

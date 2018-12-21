@@ -2,7 +2,7 @@ import React, { Component }from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
 export default class AuthRoute extends Component {
-  hasLoggedIn() {
+  hasUserLoggedIn() {
     const user = localStorage.getItem('user');
     return user !== null;
   }
@@ -12,7 +12,7 @@ export default class AuthRoute extends Component {
     return (
       <Route
         {...rest}
-        render={ props =>  this.hasLoggedIn()
+        render={ props =>  this.hasUserLoggedIn()
           ? ( <Component {...props} /> )
           : ( <Redirect to={{pathname: '/login', state: {from: props.location}}} /> )
         }

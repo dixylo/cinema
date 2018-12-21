@@ -1,13 +1,9 @@
 export async function load_rooms () {
-  return fetch("https://cinema-react.firebaseio.com/cinema/rooms.json");
+  return fetch('https://cinema-react.firebaseio.com/cinema/rooms.json');
 }
 
 export async function load_users () {
-  return fetch("https://cinema-react.firebaseio.com/cinema/users.json");
-}
-
-export async function load_slides () {
-  return fetch('https://cinema-react.firebaseio.com/cinema/slides.json');
+  return fetch('https://cinema-react.firebaseio.com/cinema/users.json');
 }
 
 export async function load_movies () {
@@ -22,9 +18,32 @@ export async function load_orders () {
   return fetch('https://cinema-react.firebaseio.com/cinema/orders.json');
 }
 
-export async function reserve_seats (rooms) {
+export async function query_movie (movieId) {
+  return fetch(`https://cinema-react.firebaseio.com/cinema/movies/${movieId}.json`);
+}
+
+export async function query_comments (movieId) {
+  return fetch(`https://cinema-react.firebaseio.com/cinema/comments/${movieId}.json`);
+}
+
+export async function update_seats (coors, status) {
+  let coorsObject = {};
+  coors.forEach(coor => {
+    const { roomIndex, rowIndex, seatIndex, session } = coor;
+    coorsObject = {
+      ...coorsObject, [`${roomIndex}/rows/${rowIndex}/seats/${seatIndex}/status/${session}`]: status
+    }
+  });
+  const jsonCoors = JSON.stringify(coorsObject);
+  return fetch('https://cinema-react.firebaseio.com/cinema/rooms.json', {
+    method: 'PATCH',
+    body: jsonCoors
+  });
+}
+
+export async function cancel_reservation (rooms) {
   const jsonRooms = JSON.stringify(rooms);
-  return fetch("https://cinema-react.firebaseio.com/cinema.json", {
+  return fetch('https://cinema-react.firebaseio.com/cinema.json', {
     method: 'PATCH',
     body: jsonRooms
   });
@@ -62,14 +81,26 @@ export async function change_password (userId, password) {
   });
 }
 
-export async function delete_comment (movieId, commentIndex) {
-  return fetch(`https://cinema-react.firebaseio.com/cinema/comments/${movieId}/${commentIndex}.json`, {
+export async function delete_comment (movieId, commentKey) {
+  return fetch(`https://cinema-react.firebaseio.com/cinema/comments/${movieId}/${commentKey}.json`, {
     method: 'DELETE',
   })
 }
 
-export async function delete_order (userId, orderIndex) {
-  return fetch(`https://cinema-react.firebaseio.com/cinema/orders/${userId}/${orderIndex}.json`, {
+export async function delete_order (userId, orderKey) {
+  return fetch(`https://cinema-react.firebaseio.com/cinema/orders/${userId}/${orderKey}.json`, {
+    method: 'DELETE',
+  })
+}
+
+export async function delete_user (userId) {
+  return fetch(`https://cinema-react.firebaseio.com/cinema/users/${userId}.json`, {
+    method: 'DELETE',
+  })
+}
+
+export async function delete_movie (movieId) {
+  return fetch(`https://cinema-react.firebaseio.com/cinema/movies/${movieId}.json`, {
     method: 'DELETE',
   })
 }

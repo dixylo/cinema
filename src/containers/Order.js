@@ -25,7 +25,7 @@ class OrderContainer extends Component {
 
   handleConfirm (order) {
     const { placeOrder, currentUser } = this.props;
-    if (currentUser.hasLoggedIn) {
+    if (currentUser.hasUserLoggedIn) {
       const userId = currentUser.user.userId;
       placeOrder(userId, order);
     } else {
@@ -35,7 +35,7 @@ class OrderContainer extends Component {
 
   render () {
     const { movieId, movies, roomId, rooms, session } = this.props;
-    const movie_i = parseInt(movieId, 10) - 1;
+    const movie_i = parseInt(movieId, 10);
     const movieName = movies[movie_i] && movies[movie_i].name;
     const room_i = parseInt(roomId, 10) - 1;
     const room = {...{id: 1, rows: []}, ...rooms[room_i]};

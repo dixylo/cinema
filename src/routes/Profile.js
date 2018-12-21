@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { changePasswordAsync } from '../reducers/users';
+import { sessionToDateTime } from '../services/utils';
 
 class Profile extends Component {
   state = {
@@ -9,21 +10,22 @@ class Profile extends Component {
     newpassword: ''
   };
 
+  handleChangePasswordShown (e) {
+    this.setState({ isChangePasswordShown: !this.state.isChangePasswordShown });
+  }
+
   handlePasswordChange () {
-    const { isChangePasswordShown, currentpassword, newpassword } = this.state;
+    const { currentpassword, newpassword } = this.state;
     const { userId, password } = this.props.currentUser.user;
-    if (isChangePasswordShown) {
-      if (currentpassword !== password) {
-        alert('Current password is not correct!');
-        return;
-      } else if (newpassword === '') {
-        alert('New password cannot be blank!');
-        return;
-      } else {
-        this.props.changePassword(userId, newpassword);
-      }
+    if (currentpassword !== password) {
+      alert('Current password is not correct!');
+      return;
+    } else if (newpassword === '') {
+      alert('New password cannot be blank!');
+      return;
+    } else {
+      this.props.changePassword(userId, newpassword);
     }
-    this.setState({ isChangePasswordShown: !isChangePasswordShown });
   }
 
   handlePasswordInput (e) {
@@ -35,22 +37,22 @@ class Profile extends Component {
   render() {
     const { userId, username, password } = this.props.currentUser.user;
     const { orders } = this.props;
-    console.log(orders);
     const currentUserOrders = orders[userId];
     return (
       <div className='user'>
-        <div className="user-panel">
-          <p>User Information</p>
-          <div>
+        <div className="profile">
+          <p><b>User Information</b></p>
+          <hr className='user-panel-hr' />
+          <div className='user-panel-div'>
             <div>
               <label htmlFor="userid">User ID: </label>
               <input
                 type="text"
                 name="userid"
                 id="userid"
+                className='user-panel-input'
                 value={userId}
                 disabled
-                style={{display: 'inline'}}
               />
             </div>
             <div>
@@ -59,9 +61,9 @@ class Profile extends Component {
                 type="text"
                 name="username"
                 id="username"
+                className='user-panel-input'
                 value={username}
                 disabled
-                style={{display: 'inline'}}
               />
             </div>
             {this.state.isChangePasswordShown ?
@@ -72,7 +74,7 @@ class Profile extends Component {
                     type="password"
                     name="currentpassword"
                     id="currentpassword"
-                    style={{display: 'inline'}}
+                    className='user-panel-input'
                     onChange={this.handlePasswordInput.bind(this)}
                   />
                 </div>
@@ -82,10 +84,16 @@ class Profile extends Component {
                     type="password"
                     name="newpassword"
                     id="newpassword"
-                    style={{display: 'inline'}}
+                    className='user-panel-input'
                     onChange={this.handlePasswordInput.bind(this)}
                   />
                 </div>
+                <button
+                  className='user-panel-button'
+                  onClick={this.handlePasswordChange.bind(this)}
+                >
+                  Save Change
+                </button>
               </div> :
               <div>
                 <label htmlFor="password">Password: </label>
@@ -93,22 +101,20 @@ class Profile extends Component {
                   type="password"
                   name="password"
                   id="password"
+                  className='user-panel-input'
                   value={password}
                   disabled
-                  style={{display: 'inline'}}
                 />
-              </div>
-            }
-            <div>
-              <button
-                onClick={this.handlePasswordChange.bind(this)}
-              >
-                {this.state.isChangePasswordShown
-                  ? 'Save Change' : 'Change Password'}
-              </button>
-            </div>
+              </div>}
+            <p
+              className='change-password-toggle'
+              onClick={this.handleChangePasswordShown.bind(this)}
+            >
+              {this.state.isChangePasswordShown ?
+                'Cancel Change' : 'Change Password'}
+            </p>
           </div>
-          <table className="order-table">
+          {currentUserOrders && <table className="admin-table" style={{ marginLeft: '-30px'}}>
             <thead>
               <tr>
                 <th>Order No.</th>
@@ -124,8 +130,8 @@ class Profile extends Component {
               {Object.values(currentUserOrders).map(
                 (order, i) => {
                   const { movieName, session, roomId, selectedSeats, total } = order;
-                  const date = [session.slice(0, 4), session.slice(4, 6), session.slice(6, 8)].join('-');
-                  const time = session.slice(8, 10) + ':' + session.slice(10, 12) + ' ' + session.slice(12, 14);
+                  const date = sessionToDateTime(session).date;
+                  const time = sessionToDateTime(session).time;
                   const seats = selectedSeats.join(', ');
                   return (
                     <tr key={i}>
@@ -141,7 +147,7 @@ class Profile extends Component {
                 }
               )}
             </tbody>
-          </table>
+          </table>}
         </div>
       </div>
     );

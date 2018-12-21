@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Card.css';
 
-export const Card = ({movieId, name, pic, category, roomId}) => (
+export const Card = ({movieId, name, portrait, category, roomId}) => (
   <div className='card'>
     <Link to={`/movie/${movieId}/${roomId}`}>
-      <img alt={name} src={pic} />
+      <img alt={name} src={portrait} />
     </Link>    
     <div className='content'>
       <h4><b>{name}</b></h4>

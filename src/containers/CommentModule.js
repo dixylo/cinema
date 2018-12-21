@@ -7,6 +7,7 @@ export default class CommentModule extends Component {
     const movieId = this.props.movieId;
     return (
       <div className='wrapper'>
+        <h2>Comments</h2>
         <CommentInput movieId={movieId} />
         <CommentList movieId={movieId} />
       </div>

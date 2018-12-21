@@ -12,13 +12,12 @@ import Contact from './routes/Contact';
 import Register from './routes/Register';
 import Login from './routes/Login';
 import Profile from './routes/Profile';
+import Admin from './routes/Admin';
 import { fetchUsers } from './reducers/users';
 import { fetchMovies } from './reducers/movies';
-import { fetchSlides } from './reducers/slides';
 
 class CinemaApp extends Component {
   componentDidMount () {
-    this.props.initSlides();
     this.props.initMovies();
     this.props.initUsers();
   }
@@ -27,7 +26,7 @@ class CinemaApp extends Component {
     return (
       <BrowserRouter>
         <div>
-          <Header hasLoggedIn={this.props.hasLoggedIn} />
+          <Header loginStatus={this.props.loginStatus} />
 
           <Route exact path='/' component={Home} />
           <Route exact path='/movies' component={Movies} />
@@ -38,6 +37,7 @@ class CinemaApp extends Component {
           <Route exact path='/register' component={Register} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/profile' component={Profile}/>
+          <Route exact path='/admin' component={Admin}/>
 
           <Footer />
         </div>
@@ -48,7 +48,7 @@ class CinemaApp extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    hasLoggedIn: state.login.hasLoggedIn
+    loginStatus: state.login
   };
 }
 
@@ -59,9 +59,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     initMovies: () => {
       dispatch(fetchMovies());
-    },
-    initSlides: () => {
-      dispatch(fetchSlides());
     }
   };
 };

@@ -36,8 +36,9 @@ code {
 }
 
 .nav-item img {
-  width: 40px;
+  width: 30px;
   display: inline-block;
+  vertical-align: sub;
 }
 
 .nav-item span {
@@ -74,12 +75,12 @@ code {
 /* Movie Page Starts */
 .detail {
   width: 1100px;
-  height: 610px;
+  height: 600px;
   padding-top: 60px;
   padding-left: 150px;
   background-image: url('./assets/film_strip.png');
   background-size: 100%;
-  margin: 50px auto;
+  margin: 0px auto;
   overflow: hidden;
 }
 
@@ -111,205 +112,25 @@ code {
 }
 /* Movie Page Ends */
 
-/* Booking Page Starts */
-.box-office {
-  width: 100vw;
-  height: 100vh;
-  background-image: url('./assets/cinema.jpg');
-  background-size: 100vw 100vh;
-  border: 1px solid black;
-}
-
-.room {
-  position: relative;
-  top: 8.5%;
-  margin: auto;
-  background-color: white;
-  opacity: 0.90;
-  text-align: center;
-}
-
-.seat {
-  position: absolute;
-  text-align: center;
-}
-
-.seat:hover {
-  background-color: #ccc;
-}
-
-.seat img {
-  width: 100%;
-}
-
-.seat span {
-  position: absolute;
-  font-size: 50%;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /* Prevent seat IDs from being seleted */
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none; /* Standard syntax */
-}
-
-.order-panel {
-  padding: 20px;
-  margin: 100px;
-  background-color: #dacb9d;
-  opacity: 0.9;
-  border-radius: 5px;
-  font-size: 15px;
-  position: absolute;
-  top: 10%;
-  left: -50px;
-}
-
-.order-panel span {
-  font-size: 10px;
-  color: #333333;
-}
-
-.order-panel button {
-  padding: 5px;
-  width: 100%;
-  border-radius: 5px;
-}
-
-.order-table {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.order-table td, .order-table th {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-.order-table tr:last-child {background-color: #ddd;}
-
-.order-table th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: center;
-  background-color: #4CAF50;
-  color: white;
-}
-
-.session-panel {
-  position: absolute;
-  top: 10%;
-  right: -50px;
-  padding: 20px;
-  margin: 100px;
-  background-color: #dacb9d;
-  opacity: 0.9;
-  border-radius: 5px;
-  font-size: 15px;
-}
-
-.session-panel input {
-  float: left;
-}
-
-.session-panel select {
-  float: right;
-}
-/* Booking Page Ends */
-
-/* About Page Starts */
-.about {
-  height: 100%;
-  padding: 100px 200px 200px;
-  background-image: url('./assets/curtained_screen.jpg');
-  background-size: 100vw 100%;
-}
-
-.about div {
-  width: 80%;
-  margin: 0px auto;
-  text-align: justify;
-}
-
-.about h1 {
-  text-align: center;
-}
-
-.about p, img {
-  width: 100%;
-}
-/* About Page Ends */
-
-/* User Pages Start */
-.user {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: auto;
-  text-align: center;
-  background-image: url('./assets/camera.jpg');
-  background-size: 100vw;
-}
-
-.user-panel {
-  position: relative;
-  top: 23vh;
-  /* left: 36vw; */
-  margin: auto;
-  width: 50%;
-  /* height: 50%; */
-  padding: 20px;
-  background-color: #eee;
-}
-
-.user-panel p {
-  font-size: 30px;
-  text-align: center;
-}
-
-.user-panel input, button {
-  display: block;
-  width: 60%;
-  height: 40px;
-  margin: 20px auto;
-  border-radius: 5px;
-  font-size: 20px;
-}
-
-.user-panel img {
-  width: 40px;
-  display: inline-block;
-}
-
-.user-panel span {
-  font-family: 'Courier New', Courier, monospace;
-}
-/* User Pages Start */
-
 /* Comment Module Starts */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  background-color: #fbfbfb;
+.comment-area {
+  width: 1100px;
+  background-image: url('./assets/film_strip.png');
+  background-size: 100%;
+  margin: 0px auto;
+  overflow: hidden;
 }
 
 .wrapper {
   width: 800px;
   margin: 10px auto;
-  font-size: 14px;
-  background-color: #fff;
-  border: 1px solid #f1f1f1;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 18px;
   padding: 20px;
 }
 
-/* 评论框样式 */
+/* comment input */
 .comment-input {
-  background-color: #fff;
-  border: 1px solid #f1f1f1;
   padding: 20px;
   margin-bottom: 10px;
 }
@@ -339,6 +160,7 @@ body {
   font-size: 14px;
   resize: none;
   flex: 1;
+  opacity: 0.6;
 }
 
 .comment-field-input textarea {
@@ -369,20 +191,18 @@ body {
   background: #13c1f1;
 }
 
-/* 评论列表样式 */
+/* comment list */
 .comment-list {
-  background-color: #fff;
-  border: 1px solid #f1f1f1;
   padding: 20px;
 }
 
-/* 评论组件样式 */
+/* comment components */
 .comment {
   position: relative;
   display: flex;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid #999;
   margin-bottom: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   min-height: 50px;
 }
 
@@ -428,3 +248,372 @@ code {
   padding: 0px 2px;
 }
 /* Comment Module Ends */
+
+/* Booking Page Starts */
+.box-office {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('./assets/cinema.jpg');
+  background-size: 100vw 100vh;
+  border: 1px solid black;
+}
+
+.room {
+  position: relative;
+  margin: auto;
+  background-image: radial-gradient(white, #eee, #999);
+  opacity: 1;
+  text-align: center;
+}
+
+.seat {
+  position: absolute;
+  text-align: center;
+}
+
+.seat:hover {
+  background-color: #ccc;
+}
+
+.seat img {
+  width: 100%;
+  height: 100%;
+}
+
+.seat span {
+  position: absolute;
+  font-size: 50%;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Prevent seat IDs from being seleted */
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Standard syntax */
+}
+
+.order-panel {
+  margin: 100px;
+  border-radius: 5px;
+  font-size: 15px;
+  position: absolute;
+  top: 0%;
+  left: -40px;
+}
+
+.ticket-top, .ticket-bottom {
+  height: 10vh;
+  background-image: url('./assets/ticket_edge.png');
+  background-size: 100% 100%;
+}
+
+.ticket-bottom {
+  transform: scaleY(-1);
+}
+
+.ticket-body {
+  padding: 20px;
+  background-image: url('./assets/ticket_body.png');
+  background-size: 100% 100%;
+  border-top: 2px dashed black;
+  border-bottom: 2px dashed black;
+}
+
+.order-content {
+  border: 4px double black;
+  border-radius: 5px;
+  padding: 10px;
+  padding-top: 5px;
+}
+
+.order-content span {
+  font-size: 10px;
+  color: #333333;
+}
+
+.order-button {
+  padding: 5px;
+  width: 100%;
+  border-radius: 5px;
+  color: white;
+  background-color: #13c1f1;
+  outline: none;
+}
+
+.order-button:hover {
+  cursor: pointer;
+  background-color: #00a3cf;
+}
+
+.order-table {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.order-table td, .order-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.order-table tr:last-child {background-color: #ddd;}
+
+.order-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.session-panel {
+  position: absolute;
+  top: 5%;
+  right: -50px;
+  padding: 10px;
+  padding-top: 0;
+  margin: 100px;
+  background-color: #be0706;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.session {
+  padding: 10px;
+  height: 150px;
+  color: white;
+}
+
+.session input {
+  float: left;
+}
+
+.session select {
+  float: right;
+}
+
+.legend {
+  padding: 10px;
+  padding-top: 5px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.legend img {
+  width: 30px;
+  height: 37px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+/* Booking Page Ends */
+
+/* About Page Starts */
+.about {
+  height: 100%;
+  padding: 150px 200px 200px;
+  background-image: url('./assets/about.png');
+  background-size: 100% 100%;
+}
+
+.about div {
+  width: 80%;
+  margin: 4vw auto;
+  text-align: justify;
+}
+
+.about h1 {
+  text-align: center;
+}
+
+.about p {
+  width: 100%;
+}
+/* About Page Ends */
+
+/* Contact Page Starts */
+.contact {
+  height: 100%;
+  padding: 10vh 30vh 20vw;
+  background-image: url('./assets/contact.png');
+  background-size: 100% 100%;
+}
+
+.contact-info {
+  width: 40%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.map{
+  position: relative;
+  height: 40vh;
+  width: 55%;
+  margin: 0px 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+/* Contact Page Ends */
+
+/* User Pages Start */
+.user {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-image: url('./assets/camera.png');
+  background-size: 100vw;
+}
+
+.user-panel {
+  position: relative;
+  top: 15vh;
+  left: 10vw;
+  width: 500px;
+  height: 450px;
+  padding: 40px;
+  padding-top: 200px;
+  background-image: url('./assets/clapperboard.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.user-panel p {
+  font-size: 20px;
+  margin: 0;
+}
+
+.user-panel-div {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.user-panel-hr {
+  border: 1px solid black;
+}
+
+.user-panel-input {
+  display: inline-block;
+  width: 60%;
+  height: 20px;
+  font-size: 20px;
+  margin: 10px;
+  border: none;
+  border-bottom: 2px solid black;
+  outline: none;
+}
+
+.user-panel-button {
+  width: 60%;
+  height: 40px;
+  margin: 20px auto;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.user-panel-button:hover {
+  background-color: #ccc;
+}
+
+.profile {
+  position: relative;
+  top: 15vh;
+  left: 3vw;
+  width: 700px;
+  padding: 150px;
+  padding-top: 50px;
+  background-image: url('./assets/film-clip.png');
+  background-size: 100%;
+}
+
+.change-password-toggle {
+  float: right;
+  color: blue;
+  text-decoration: underline;
+}
+
+.change-password-toggle:hover {
+  cursor: pointer;
+}
+/* User Pages Start */
+
+/* Admin Page Starts */
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tablink {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+/* Change background color of buttons on hover */
+.tablink:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tablink-active {
+  /* background-color: #717171; */
+  text-decoration: underline;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  /* border: 1px solid red; */
+  border-top: none;
+}
+
+/* Admin Table Starts */
+.admin {
+  border: 1px solid green;
+  height: 100%;
+}
+
+.admin-table {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 50%;
+  margin: auto;
+  background-color: white;
+}
+
+.admin-table td, .admin-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.admin-table tr:nth-child(even){background-color: #f2f2f2;}
+
+.admin-table tr:hover {background-color: #ddd;}
+
+.admin-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.admin-table span {
+  color: #00a3cf;
+  font-size: 12px;
+  cursor: pointer;
+}
+/* Admin Table Ends */
+/* Admin Page Ends */

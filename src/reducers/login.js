@@ -9,7 +9,8 @@ export default function Login (state, action) {
         username: '',
         password: ''
       },
-      hasLoggedIn: false
+      hasUserLoggedIn: false,
+      hasAdminLoggedIn: false
     };
   }
 
@@ -17,7 +18,10 @@ export default function Login (state, action) {
     case LOG_IN:
       return {
         user: action.user,
-        hasLoggedIn: true
+        hasUserLoggedIn: true,
+        hasAdminLoggedIn:
+          action.user.username === 'Admin'
+          ? true : false
       };
     case LOG_OUT:
       return {
@@ -26,7 +30,8 @@ export default function Login (state, action) {
           username: '',
           password: ''
         },
-        hasLoggedIn: false
+        hasUserLoggedIn: false,
+        hasAdminLoggedIn: false
       };
     default:
       return state;
