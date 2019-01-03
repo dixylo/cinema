@@ -5,7 +5,6 @@
   transition: 0.3s;
   float: left;
   background-color: white;
-  transition: transform 0.2s;
 }
 
 .card:hover {

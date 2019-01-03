@@ -26,8 +26,12 @@ class OrderContainer extends Component {
   handleConfirm (order) {
     const { placeOrder, currentUser } = this.props;
     if (currentUser.hasUserLoggedIn) {
-      const userId = currentUser.user.userId;
-      placeOrder(userId, order);
+      if (order.selectedSeats.length === 0) {
+        alert('No Seat has been selected.')
+      } else {
+        const userId = currentUser.user.userId;
+        placeOrder(userId, order);
+      }
     } else {
       alert("Please log in to proceed.");
     }
