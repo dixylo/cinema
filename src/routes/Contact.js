@@ -19,6 +19,7 @@ export default class Contact extends Component {
   };
 
   render() {
+    const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
     return (
       <div className='contact'>
         <div className='contact-info'>
@@ -32,7 +33,7 @@ export default class Contact extends Component {
         </div>
         <div className='map'>
           <GoogleMaps
-            bootstrapURLKeys={{ key: 'AIzaSyCoH5M9Q9SWhhuIgxwKSxO2cG7HuyF7VrU' }}
+            bootstrapURLKeys={{ key: googleMapsApiKey }}
             defaultCenter={this.props.center}
             defaultZoom={this.props.zoom}
           >

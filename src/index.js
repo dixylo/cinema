@@ -11,8 +11,10 @@ import * as serviceWorker from './serviceWorker';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
+const firebaseApiKey = process.env.REACT_APP_FIREBASE_API_KEY;
+
 var config = {
-  apiKey: "AIzaSyDmxrLYFCGu2LStoMvDcKxCMTbohn2FRaU",
+  apiKey: firebaseApiKey,
   authDomain: "cinema-react.firebaseapp.com",
   databaseURL: "https://cinema-react.firebaseio.com",
   storageBucket: "cinema-react.appspot.com",
