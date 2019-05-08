@@ -10,13 +10,14 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 .header {
   background-color: #3e3b49;
   overflow: hidden;
+  display: flex;
+  flex-direction: row;
 }
 
 .footer {
@@ -24,6 +25,17 @@ code {
   overflow: hidden;
   text-align: center;
   color: white;
+}
+
+.navbar-collapsed {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-menu {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
 }
 
 .nav-item {
@@ -35,18 +47,95 @@ code {
   display: inline-block;
 }
 
-.nav-item img {
+.nav-item:hover {
+  color: #3e3b49;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+
+.nav-button {
+  margin-right: 26px;
+  display: none;
+  padding: 0;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+}
+
+.nav-button:focus {
+  outline: 0;
+}
+
+.nav-button:hover {
+  background-color: #f2f2f2;
+}
+
+.nav-button:hover .tribar {
+  border-color: #3e3b49;
+}
+
+.tribar {
+  margin: 10px;
+  display: block;
+  width: 30px;
+  height: 2px;
+  border: 1px solid #f2f2f2;
+  border-radius: 1px;
+}
+
+.nav-logo {
+  color: #f2f2f2;
+  text-decoration: none;
+  padding: 14px 26px;
+  font-size: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-logo img {
   width: 30px;
   display: inline-block;
   vertical-align: sub;
 }
 
-.nav-item span {
-  font-family: 'Courier New', Courier, monospace;
+.nav-hr {
+  display: none;
+  color: #f2f2f2;
+  width: 90%;
 }
 
-.nav-user {
-  float: right;
+@media screen and (max-width: 890px) {
+  .navbar-collapsed {
+    flex: 1;
+  }
+
+  .navbar-menu {
+    display: none;
+  }
+
+  .navbar-menu.responsive {
+    display: block;
+    /* align-items: space-around; */
+    position: absolute;
+    top: 54px;
+    right: 0;
+    z-index: 1;
+    background-color: #3e3b49;
+  }
+
+  .nav-button {
+    display: inline-block;
+  }
+
+  .nav-item {
+    display: block;
+  }
+
+  .nav-hr {
+    display: block;
+  }
 }
 /* Default Layout Ends */
 
