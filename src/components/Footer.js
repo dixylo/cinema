@@ -4,7 +4,7 @@ export default class Footer extends Component {
   render () {
     return (
       <div className='footer'>
-        <p>&copy;&nbsp;2018 Copyright by DIXYLO&trade;. All Rights Reserved.</p>
+        <p>&copy;&nbsp;2019 Copyright by DIXYLO&trade;. All Rights Reserved.</p>
       </div>
     );
   }

@@ -171,28 +171,24 @@ code {
 .detail {
   width: 1100px;
   height: 600px;
-  padding-top: 60px;
-  padding-left: 150px;
   background-image: url('./assets/film_strip.png');
   background-size: 100%;
   margin: 0px auto;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .panel {
   width: 300px;
   height: 444px;
   margin: 10px 20px;
-  left: 100px;
-  top: 100px;
-  float: left;
 }
 
 .metadata {
   width: 400px;
-  margin: 10px 0px;
   font: 25px Courier New;
-  float: left;
 }
 
 .metadata span {
@@ -203,7 +199,16 @@ code {
 .ticket-link {
   color: black;
   float: right;
+  transition: 0.3s;
   text-decoration: none;
+  padding: 5px 15px;
+  border: 1px solid transparent;
+}
+
+.ticket-link:hover {
+  /* transform: scale(1.02); */
+  border-color: black;
+  border-radius: 5px;
 }
 /* Movie Page Ends */
 
@@ -263,27 +268,26 @@ code {
 }
 
 .comment-field-button {
-  /* display: flex;
-  flex-direction: row;
-  justify-content: flex-start; */
-  /* border: 1px solid red; */
   text-align: right;
 }
 
 .comment-field-button button {
   padding: 5px 10px;
   width: 80px;
-  border: none;
+  border: 1px solid black;
   border-radius: 3px;
-  background-color: #00a3cf;
-  color: #fff;
+  color: black;
   outline: none;
   cursor: pointer;
   display: inline-block;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  transition: 0.3s;
+  background-color: transparent;
 }
 
-.comment-field-button button:active {
-  background: #13c1f1;
+.comment-field-button button:hover {
+  transform: scale(1.05);
 }
 
 /* comment list */

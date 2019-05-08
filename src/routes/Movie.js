@@ -54,7 +54,7 @@ class Movie extends Component {
               <p><span>Category:</span> {movie.category}</p>
               {movie.isOn && (
                 <Link className='ticket-link' to={`/booking/${movieId}/${roomId}`}>
-                  Buy Ticket&#x21E8;
+                  Buy Ticket &rArr;
                 </Link>
               )}
               {movie.isComing && (
