@@ -45,21 +45,11 @@ class RoomContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    rooms: state.rooms.rooms
-  };
-};
+const mapStateToProps = state => ({ rooms: state.rooms.rooms });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    initRooms: () => {
-      dispatch(fetchRooms());
-    },
-    toggleSeat: (coor) => {
-      dispatch(toggleSeat(coor));
-    }
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  initRooms: () => dispatch(fetchRooms()),
+  toggleSeat: coor => dispatch(toggleSeat(coor))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoomContainer);

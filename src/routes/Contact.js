@@ -22,27 +22,28 @@ export default class Contact extends Component {
     const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
     return (
       <div className='contact'>
-        <div className='contact-info'>
-          <h1>Contact us</h1>
-          <hr />
-          <br />
-          <p><b>Address: </b>24 Milford Rd, Milford, Auckland 0620</p>
-          <p><b>Website: </b>milfordcinema.co.nz</p>
-          <p><b>Tel: </b>09 456 7890</p>
-          <p><b>Email: </b>info@milfordcinema.co.nz</p>
-        </div>
-        <div className='map'>
-          <GoogleMaps
-            bootstrapURLKeys={{ key: googleMapsApiKey }}
-            defaultCenter={this.props.center}
-            defaultZoom={this.props.zoom}
-          >
-            <Marker
-              lat={-36.771997}
-              lng={174.766108}
-              text={'Milford Cinema'}
-            />
-          </GoogleMaps>
+        <div className='contact-wrapper'>
+          <div className='contact-info'>
+            <h2>Contact us</h2>
+            <hr />
+            <p><b>Address: </b>24 Milford Rd, Milford, Auckland 0620</p>
+            <p><b>Website: </b>milfordcinema.co.nz</p>
+            <p><b>Tel: </b>09 456 7890</p>
+            <p><b>Email: </b>info@milfordcinema.co.nz</p>
+          </div>
+          <div className='map'>
+            <GoogleMaps
+              bootstrapURLKeys={{ key: googleMapsApiKey }}
+              defaultCenter={this.props.center}
+              defaultZoom={this.props.zoom}
+            >
+              <Marker
+                lat={-36.771997}
+                lng={174.766108}
+                text={'Milford Cinema'}
+              />
+            </GoogleMaps>
+          </div>
         </div>
       </div>
     )

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Card.css';
 
-export const Card = ({movieId, name, portrait, category, roomId}) => (
+const Card = ({ movieId, name, portrait, category, roomId }) => (
   <div className='card'>
     <Link to={`/movie/${movieId}/${roomId}`}>
       <img alt={name} src={portrait} />
@@ -12,4 +12,6 @@ export const Card = ({movieId, name, portrait, category, roomId}) => (
       <p>{category}</p>
     </div>
   </div>
-)
+);
+
+export default Card;

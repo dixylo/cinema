@@ -42,7 +42,7 @@ export default class CommentInput extends Component {
     return (
       <div className='comment-input'>
         <div className='comment-field'>
-          <span className='comment-field-name'><b>User Name: </b></span>
+          <span className='comment-field-name'><b>Username: </b></span>
           <div className='comment-field-input'>
             <input 
               value={this.state.username}

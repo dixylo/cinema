@@ -50,7 +50,8 @@ export const fetchComments = () => {
   return (dispatch) => {
     return load_comments()
       .then(response => response.json())
-      .then(comments => dispatch(initComments(comments)));
+      .then(comments => dispatch(initComments(comments)))
+      .catch(ex => console.log(ex.message));
   };
 };
 
@@ -58,7 +59,8 @@ export const addCommentAsync = (movieId, comment) => {
   return (dispatch) => {
     return add_comment(movieId, comment)
       .then(response => response.json())
-      .then(key => dispatch(addComment(movieId, key, comment)));
+      .then(key => dispatch(addComment(movieId, key, comment)))
+      .catch(ex => console.log(ex.message));
   };
 };
 
@@ -70,6 +72,6 @@ export const deleteCommentAsync = (movieId, commentKey) => {
           dispatch(deleteComment(movieId, commentKey));
         }
       }
-    );
+    ).catch(ex => console.log(ex.message));
   }
 }

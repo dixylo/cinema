@@ -1,89 +1,145 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addUserAsync } from '../reducers/users';
+import { checkEmailValidity, signup } from '../reducers/user';
+import loading from '../assets/loading.png';
+import Modal from '../components/Modal';
 
 class Register extends Component {
   state = {
     username: '',
-    password: ''
+    email: '',
+    password: '',
+    loading: false,
+    isModalVisible: false,
+    modalHeader: '',
+    modalBody: ''
   }
 
   componentDidMount () {
     this.input.focus();
   }
 
-  handleFormChange(e) {
+  handleFormChanged = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
-  handleSignup () {
-    const { username, password } = this.state;
-    if (username === '' || password === '') {
-      alert("Neither username nor password can be blank!");
-      return;
+  handleSignup = () => {
+    const { username, email, password } = this.state;
+    if (username === '' || email === '' || password === '') {
+      return this.showModal('Fields Incomplete', 'Please complete all fields!');
     }
-    const { users } = this.props;
-    const arrayKeys = Object.keys(users);
-    const userId = Math.max(...arrayKeys) + 1;
-    users.forEach(
-      user => {
-        if (user.username.toLowerCase() === username.toLowerCase()) {
-          alert("Username already exists. Please select another one!");
-          return;
+
+    if (password.length < 6) {
+      return this.showModal('Invalid Password', 'Password should be at least 6 characters.');
+    }
+    
+    this.setState({ loading: true }, () => {
+      checkEmailValidity(email).then(isValid => {
+        if (isValid) {
+          this.props.signup({
+            username, email, password
+          }, () => this.setState({ loading: false }))
+        } else {
+          this.showModal('Invalid Email', 'This email has been used.');
+          this.setState({ loading: false });
         }
-      }
-    );
-    this.props.addUser({ userId, username, password });
-    this.props.history.push('/login');
-  }
+      }).catch(err => {
+        console.log(err.message);
+      });
+    });
+  };
+
+  showModal = (header, body) => {
+    this.setState({
+      isModalVisible: true,
+      modalHeader: header,
+      modalBody: body
+    });
+  };
+
+  handleOk = () => {
+    this.setState({ isModalVisible: false });
+  };
 
   render () {
+    const { visibility, header, body, onOk } = this.props.modal;
+
     return (
       <div className="user">
-        <div className="user-panel">
+        <div className="user-panel user-panel-signup">
           <p>MILFORD CINEMA</p>
           <hr className='user-panel-hr' />
           <div className='user-panel-div'>
-            <label htmlFor='username'>USERNAME</label>
-            <input
-              ref={(input) => this.input = input}
-              type="text"
-              name="username"
-              className='user-panel-input'
-              value={this.state.username}
-              onChange={this.handleFormChange.bind(this)}
-            />
-            <label htmlFor='password'>PASSWORD</label>
-            <input
-              type="password"
-              name="password"
-              className='user-panel-input'
-              value={this.state.password}
-              onChange={this.handleFormChange.bind(this)}
-            />
+            <div className='user-panel-row'>
+              <label htmlFor='username'>USERNAME</label>
+              <input
+                ref={input => this.input = input}
+                type="text"
+                name="username"
+                className='user-panel-input'
+                value={this.state.username}
+                onChange={this.handleFormChanged}
+              />
+            </div>
+            <div className='user-panel-row'>
+              <label htmlFor='username'>EMAIL</label>
+              <input
+                type="email"
+                name="email"
+                className='user-panel-input'
+                value={this.state.email}
+                onChange={this.handleFormChanged}
+              />
+            </div>
+            <div className='user-panel-row'>
+              <label htmlFor='password'>PASSWORD</label>
+              <input
+                type="password"
+                name="password"
+                className='user-panel-input'
+                value={this.state.password}
+                onChange={this.handleFormChanged}
+              />
+            </div>
             <button
               className='user-panel-button'
-              onClick={this.handleSignup.bind(this)}
+              onClick={this.handleSignup}
+              disabled={this.state.loading}
             >
-              Sign up
+              {this.state.loading
+                ? (
+                  <div className='loader-wrapper'>
+                    <img className='loading' alt='Loading...' src={loading} />
+                    &nbsp;
+                    <span>Loading</span>
+                  </div>
+                )
+                : 'Sign up'}
             </button>
           </div>
         </div>
+        <Modal 
+          visibility={visibility || this.state.isModalVisible}
+          header={visibility ? header : this.state.modalHeader}
+          body={visibility ? body : this.state.modalBody}
+          onOk={visibility ? onOk : this.handleOk}
+        />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    users: state.users.users
+    modal: state.user.modal,
+    currentUser: state.user
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    addUser: (user) => {
-      dispatch(addUserAsync(user));
+    signup: (user, callback) => {
+      dispatch(signup(user, callback));
     }
   };
 };

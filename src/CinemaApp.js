@@ -13,13 +13,11 @@ import Register from './routes/Register';
 import Login from './routes/Login';
 import Profile from './routes/Profile';
 import Admin from './routes/Admin';
-import { fetchUsers } from './reducers/users';
 import { fetchMovies } from './reducers/movies';
 
 class CinemaApp extends Component {
   componentDidMount () {
     this.props.initMovies();
-    this.props.initUsers();
   }
 
   render() {
@@ -46,21 +44,8 @@ class CinemaApp extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loginStatus: state.login
-  };
-}
+const mapStateToProps = state => ({ loginStatus: state.user });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    initUsers: () => {
-      dispatch(fetchUsers());
-    },
-    initMovies: () => {
-      dispatch(fetchMovies());
-    }
-  };
-};
+const mapDispatchToProps = dispatch => ({ initMovies: () => dispatch(fetchMovies()) });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CinemaApp);

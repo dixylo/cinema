@@ -1,28 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
 import { sessionToDateTime } from '../services/utils';
-import { deleteOrderAsync } from '../reducers/orders';
+import { deleteOrderAsync, fetchOrders } from '../reducers/orders';
 
 class OrderList extends Component {
-  static defaultProps = {
-    // movieName: '',
-    // roomId: '1',
-    // room: {
-    //   id: '1',
-    //   rows: []
-    // },
-    // date: '',
-    // time: ''
-  }
-
-  static propTypes = {
-    // movieName: PropTypes.string,
-    // roomId: PropTypes.string,
-    // room: PropTypes.object,
-    // date: PropTypes.string,
-    // time: PropTypes.string,
-    // onConfirm: PropTypes.func
+  componentDidMount () {
+    this.props.initOrders();
   }
 
   handleClick (userId, orderKey) {
@@ -32,6 +15,7 @@ class OrderList extends Component {
   }
 
   render () {
+    const { orders } = this.props;
     return (
       <table className='admin-table'>
         <thead>
@@ -47,10 +31,10 @@ class OrderList extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.orders.map((userOrders, userId) =>
-            userOrders && Object.keys(userOrders).map(
+          {Object.keys(orders).map(userId =>
+            orders[userId] && Object.keys(orders[userId]).map(
               (orderKey, i) => {
-                const order = userOrders[orderKey];
+                const order = orders[userId][orderKey];
                 return (
                   <tr key={i}>
                     <td>{userId}</td>
@@ -90,18 +74,11 @@ class OrderList extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    orders: state.orders.orders
-  };
-};
+const mapStateToProps = state => ({ orders: state.orders.orders });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onDelete: (userId, orderKey) => {
-      dispatch(deleteOrderAsync(userId, orderKey));
-    }
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  initOrders: () => dispatch(fetchOrders()),
+  onDelete: (userId, orderKey) => dispatch(deleteOrderAsync(userId, orderKey))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderList);

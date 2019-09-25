@@ -50,7 +50,8 @@ export const fetchOrders = () => {
   return dispatch => {
     return load_orders()
       .then(response => response.json())
-      .then(orders => dispatch(initOrders(orders)));
+      .then(orders => dispatch(initOrders(orders)))
+      .catch(ex => console.log(ex.message));
   };
 };
 
@@ -58,7 +59,8 @@ export const addOrderAsync = (userId, order) => {
   return (dispatch) => {
     return add_order(userId, order)
       .then(response => response.json())
-      .then(key => dispatch(addOrder(userId, key, order)));
+      .then(key => dispatch(addOrder(userId, key, order)))
+      .catch(ex => console.log(ex.message));
   };
 };
 
@@ -70,6 +72,6 @@ export const deleteOrderAsync = (userId, orderKey) => {
           dispatch(deleteOrder(userId, orderKey));
         }
       }
-    );
+    ).catch(ex => console.log(ex.message));
   }
 }

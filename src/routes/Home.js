@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Carousel from '../components/Carousel';
-import { Card } from '../components/Card';
+import Card from '../components/Card';
 
 class Home extends Component {
   static propTypes = {
@@ -22,8 +22,8 @@ class Home extends Component {
       <div className="container">
         <Carousel slides={slides} />
         <h1>Now Showing</h1>
+        <hr />
         <div className='movies'>
-          <hr/>
           {showingMovies.map((movie, i) => movie && <Card key={i} {...movie} />)}
         </div>
       </div>

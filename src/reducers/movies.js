@@ -34,7 +34,8 @@ export const fetchMovies = () => {
   return dispatch => {
     return load_movies()
     .then(response => response.json())
-    .then(movies => dispatch(initMovies(movies)));
+    .then(movies => dispatch(initMovies(movies)))
+    .catch(ex => console.log(ex.message));
   }
 }
 
@@ -46,6 +47,6 @@ export const deleteMovieAsync = (movieId) => {
           dispatch(deleteMovie(movieId));
         }
       }
-    );
+    ).catch(ex => console.log(ex.message));
   }
 }

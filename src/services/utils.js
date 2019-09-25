@@ -13,9 +13,9 @@ export const seatIdToIndices = (seatId) => {
 };
 
 export const queryMovie = (movieId) => {
-  return query_movie(movieId).then(response => response.json());
+  return query_movie(movieId).then(response => response.json()).catch(ex => console.log(ex.message));
 };
 
 export const queryComments = (movieId) => {
-  return query_comments(movieId).then(response => response.json());
+  return query_comments(movieId).then(response => response.json()).catch(ex => console.log(ex.message));
 };

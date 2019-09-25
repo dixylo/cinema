@@ -5,23 +5,36 @@ const INIT_ROOMS = 'INIT_ROOMS';
 const TOGGLE_SEAT = 'TOGGLE_SEAT';
 const RESERVE_SEATS = 'RESERVE_SEATS';
 const CANCEL_RESERVATION = 'CANCEL_RESERVATION';
+const HIDE_MODAL = 'HIDE_MODAL';
 const RESERVED = 'reserved';
 const SELECTED = 'selected';
 const AVAILABLE = 'available';
 
 export default function rooms (state, action) {
   if (!state) {
-    state = { rooms: [] }
+    state = {
+      rooms: [],
+      modal: {
+        visibility: false,
+        header: '',
+        body: '',
+        onOk: null
+      }
+    };
   }
 
   switch (action.type) {
     case INIT_ROOMS:
-      return { rooms: action.rooms };
+      return { ...state, rooms: action.rooms };
     case TOGGLE_SEAT:
       const newRooms = updateRoomsWithToggledSeats(state, action.coor);
-      return { rooms: newRooms};
+      return { ...state, rooms: newRooms};
     case RESERVE_SEATS:
-      return { rooms: action.rooms };
+      return { rooms: action.rooms, modal: action.modal };
+    case CANCEL_RESERVATION:
+      return { rooms: action.rooms, modal: action.modal };
+    case HIDE_MODAL:
+      return { ...state, modal: action.modal };
     default:
       return state;
   }
@@ -46,7 +59,6 @@ function updateRoomsWithToggledSeats (state, coor) {
                         if (st_i === seat_i) {
                           switch (seat.status[session]) {
                             case RESERVED:
-                              alert('You cannot select a reserved seat!');
                               return seat;
                             case SELECTED:
                               return {...seat, status: {...seat.status, [session]: AVAILABLE}};
@@ -166,19 +178,24 @@ export const toggleSeat = (coor) => {
   return { type: TOGGLE_SEAT, coor };
 };
 
-export const reserveSeats = (rooms) => {
-  return { type: RESERVE_SEATS, rooms };
+export const reserveSeats = (rooms, modal) => {
+  return { type: RESERVE_SEATS, rooms, modal };
 };
 
-export const cancelReservation = (rooms) => {
-  return { type: CANCEL_RESERVATION, rooms};
+export const cancelReservation = (rooms, modal) => {
+  return { type: CANCEL_RESERVATION, rooms, modal };
+};
+
+export const hideModal = () => {
+  return { type: HIDE_MODAL, modal: { visibility: false, header: '', body: '', onOk: null } };
 };
 
 export const fetchRooms = () => {
   return (dispatch) => {
     return load_rooms()
       .then(response => response.json())
-      .then(rooms => dispatch(initRooms(rooms)));
+      .then(rooms => dispatch(initRooms(rooms)))
+      .catch(ex => console.log(ex.message));
   };
 };
 
@@ -190,11 +207,16 @@ export const reserveSeatsAsync = (order) => {
     return update_seats(coors, RESERVED).then(
       response => {
         if (response.status === 200) {
-          dispatch(reserveSeats(rooms));
-          alert("Reservation Confirmed!");
+          const modal = {
+            visibility: true,
+            header: 'Reservation Confirmed',
+            body: 'You have reserved the seat(s) successfully.',
+            onOk: () => dispatch(hideModal())
+          };
+          dispatch(reserveSeats(rooms, modal));
         }
       }
-    );
+    ).catch(ex => console.log(ex.message));
   };
 };
 
@@ -206,10 +228,15 @@ export const cancelReservationAsync = (order) => {
     return update_seats(coors, AVAILABLE).then(
       response => {
         if (response.status === 200) {
-          dispatch(cancelReservation(rooms));
-          alert("Reservation Canceled!");
+          const modal = {
+            visibility: true,
+            header: 'Reservation Canceled',
+            body: 'You have canceled the seat(s) successfully.',
+            onOk: () => dispatch(hideModal())
+          };
+          dispatch(cancelReservation(rooms, modal));
         }
       }
-    );
+    ).catch(ex => console.log(ex.message));
   };
 };

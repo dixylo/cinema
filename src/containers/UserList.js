@@ -1,27 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { deleteUserAsync } from '../reducers/users';
-// import PropTypes from 'prop-types';
+import { deleteUserAsync, fetchUsers } from '../reducers/users';
 
 class UserList extends Component {
-  static defaultProps = {
-    // movieName: '',
-    // roomId: '1',
-    // room: {
-    //   id: '1',
-    //   rows: []
-    // },
-    // date: '',
-    // time: ''
-  }
-
-  static propTypes = {
-    // movieName: PropTypes.string,
-    // roomId: PropTypes.string,
-    // room: PropTypes.object,
-    // date: PropTypes.string,
-    // time: PropTypes.string,
-    // onConfirm: PropTypes.func
+  componentDidMount () {
+    this.props.initUsers();
   }
 
   handleClick (userId) {
@@ -64,18 +47,11 @@ class UserList extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    users: state.users.users.slice(1)
-  };
-};
+const mapStateToProps = state => ({ users: state.users.users.slice(1) });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onDelete: (userId) => {
-      dispatch(deleteUserAsync(userId));
-    }
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  initUsers: () => dispatch(fetchUsers()),
+  onDelete: userId => dispatch(deleteUserAsync(userId))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);

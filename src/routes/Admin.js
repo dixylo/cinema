@@ -44,7 +44,7 @@ export default class Admin extends Component {
             ? { display: 'block' }
             : { display: 'none' };
           return (
-            <div className='tabcontent' style={contentStyle}>
+            <div key={i} className='tabcontent' style={contentStyle}>
               {tab.content}
             </div>
           );

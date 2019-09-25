@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CommentInput from '../components/CommentInput';
+import Modal from '../components/Modal';
 import { addCommentAsync } from '../reducers/comments';
 
 class CommentInputContainer extends Component {
@@ -9,24 +10,47 @@ class CommentInputContainer extends Component {
     onSubmit: PropTypes.func
   };
 
+  state = {
+    isModalVisible: false,
+    modalHeader: '',
+    modalBody: ''
+  };
+
   handleSubmitComment (comment) {
     const { currentUser, movieId, onSubmit } = this.props;
-    if (!currentUser.hasUserLoggedIn) {
-      alert("Please log in to comment.");
-      return;
-    }
+    if (!currentUser.hasUserLoggedIn) return this.showModal('Permission Needed', 'Please log in to comment.');
     if (!comment) return;
-    if (!comment.username) return alert('Please enter username');
-    if (!comment.content) return alert('Please enter comment');
+    if (!comment.username) return this.showModal('Invalid Post', 'Please enter a username.');
+    if (!comment.content) return this.showModal('Invalid Post', 'Please enter a comment.');;
     onSubmit(movieId, comment);
   }
 
+  showModal = (header, body) => {
+    this.setState({
+      isModalVisible: true,
+      modalHeader: header,
+      modalBody: body
+    });
+  };
+
+  handleOk = () => {
+    this.setState({ isModalVisible: false });
+  };
+
   render () {
     return (
-      <CommentInput
-        username={this.props.currentUser.user.username}
-        onSubmit={this.handleSubmitComment.bind(this)}
-      />
+      <div>
+        <CommentInput
+          username={this.props.currentUser.user.username}
+          onSubmit={this.handleSubmitComment.bind(this)}
+        />
+        <Modal 
+          visibility={this.state.isModalVisible}
+          onOk={this.handleOk}
+          header={this.state.modalHeader}
+          body={this.state.modalBody}
+        />
+      </div>
     );
   }
 }
@@ -34,7 +58,7 @@ class CommentInputContainer extends Component {
 const mapStateToProps = state => {
   return {
     comments: state.comments.comments,
-    currentUser: state.login
+    currentUser: state.user
   };
 };
 

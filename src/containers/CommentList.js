@@ -3,33 +3,67 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CommentList from '../components/CommentList';
 import { fetchComments, deleteCommentAsync } from '../reducers/comments';
+import Modal from '../components/Modal';
 
 class CommentListContainer extends Component {
   static propTypes = {
-    // comments: PropTypes.object,
     initComments: PropTypes.func,
     onDeleteComment: PropTypes.func
+  };
+
+  state = {
+    isModalVisible: false,
+    modalHeader: '',
+    modalBody: '',
+    modalCallbackOnOk: null,
+    modalCallbackOnCancel: null
   };
   
   componentWillMount () {
     this.props.initComments();
   };
 
-  handleDeleteComment (index) {
-    const { movieId } = this.props;
-    if (this.props.onDeleteComment) {
-      this.props.onDeleteComment(movieId, index);
-    }
-  }
+  handleDeleteComment = index => {
+    const { movieId, onDeleteComment } = this.props;
+
+    this.showModal(
+      'Delete Comment',
+      'Are you sure to delete this comment?',
+      () => {
+        this.setState({ isModalVisible: false });
+        onDeleteComment && onDeleteComment(movieId, index);
+      },
+      () => this.setState({ isModalVisible: false })
+    )
+  };
+
+  showModal = (header, body, callbackOnOk, callbackOnCancel) => {
+    this.setState({
+      isModalVisible: true,
+      modalHeader: header,
+      modalBody: body,
+      modalCallbackOnOk: callbackOnOk,
+      modalCallbackOnCancel: callbackOnCancel
+    });
+  };
 
   render () {
     const { movieId, comments, currentUser } = this.props;
     return (
-      <CommentList
-        comments={comments[movieId]}
-        currentUser={currentUser}
-        onDeleteComment={this.handleDeleteComment.bind(this)}
-      />
+      <div>
+        <CommentList
+          comments={comments[movieId]}
+          currentUser={currentUser}
+          onDeleteComment={this.handleDeleteComment}
+        />
+        <Modal
+          visibility={this.state.isModalVisible}
+          onOk={this.state.modalCallbackOnOk}
+          onCancel={this.state.modalCallbackOnCancel}
+          header={this.state.modalHeader}
+          body={this.state.modalBody}
+        />
+      </div>
     );
   }
 }
@@ -37,7 +71,7 @@ class CommentListContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     comments: state.comments.comments,
-    currentUser: state.login.user.username
+    currentUser: state.user.user.username
   };
 };
 

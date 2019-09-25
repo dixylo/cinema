@@ -19,13 +19,13 @@
 .slide-arrow {
   cursor: pointer;
   position: absolute;
-  top: 50%;
+  top: calc(50% - 30px);
   width: auto;
   margin-top: -22px;
   padding: 16px;
   color: white;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 30px;
   transition: 0.2s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;

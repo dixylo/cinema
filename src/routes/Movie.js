@@ -35,36 +35,37 @@ class Movie extends Component {
     const { movieId, roomId, movie } = this.state;
     return (
       <div className='container'>
-        <div className='detail'>
-          <div className='panel'>
-            {movie && (
-              <img
-                alt={movie.name}
-                src={movie.portrait}
-                style={{width: '100%'}}
-              />
-            )}
-          </div>
-          {movie && (
-            <div className='metadata'>
-              <p><span>Name:</span> {movie.name}</p>
-              <p><span>Director:</span> {movie.directors}</p>
-              <p><span>Writers:</span> {movie.writers}</p>
-              <p><span>Stars:</span> {movie.stars}</p>
-              <p><span>Category:</span> {movie.category}</p>
-              {movie.isOn && (
-                <Link className='ticket-link' to={`/booking/${movieId}/${roomId}`}>
-                  Buy Ticket &rArr;
-                </Link>
-              )}
-              {movie.isComing && (
-                <p className='ticket-link'>Coming soon...</p>
+        <div className='metadata-comment'>
+          <div className='metadata'>
+            <div className='metadata-image'>
+              {movie && (
+                <img
+                  alt={movie.name}
+                  src={movie.portrait}
+                />
               )}
             </div>
-          )}
-        </div>
-        <div className='comment-area'>
-          <CommentModule movieId={movieId} />
+            {movie && (
+              <div className='metadata-text'>
+                <p><span>Name:</span> {movie.name}</p>
+                <p><span>Director:</span> {movie.directors}</p>
+                <p><span>Writers:</span> {movie.writers}</p>
+                <p><span>Stars:</span> {movie.stars}</p>
+                <p><span>Category:</span> {movie.category}</p>
+                {movie.isOn && (
+                  <Link className='ticket-link' to={`/booking/${movieId}/${roomId}`}>
+                    Buy Ticket &rArr;
+                  </Link>
+                )}
+                {movie.isComing && (
+                  <p className='ticket-link'>Coming soon...</p>
+                )}
+              </div>
+            )}
+          </div>
+          <div className='comment-area'>
+            <CommentModule movieId={movieId} />
+          </div>
         </div>
       </div>
     )

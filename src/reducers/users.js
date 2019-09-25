@@ -4,11 +4,18 @@ const INIT_USERS = 'INIT_USERS';
 const ADD_USER = 'ADD_USER';
 const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 const DELETE_USER = 'DELETE_USER';
+const HIDE_MODAL = 'HIDE_MODAL';
 
 export default function users (state, action) {
   if (!state) {
     state = {
-      users: []
+      users: [],
+      modal: {
+        visibility: false,
+        header: '',
+        body: '',
+        onOk: null
+      }
     };
   }
 
@@ -16,22 +23,25 @@ export default function users (state, action) {
 
   switch (action.type) {
     case INIT_USERS:
-      return { users: action.users };
+      return { ...state, users: action.users };
     case ADD_USER:
-      return { users: [...users, action.user] };
+      return { users: [...users, action.user], modal: action.modal };
     case CHANGE_PASSWORD:
-      const { userId, password } = action;
+      const { userId, password, modal } = action;
       return {
         users: [
           ...users.slice(0, userId),
           { ...users[userId], password },
           ...users.slice(userId + 1)
-        ]
+        ],
+        modal
       };
     case DELETE_USER:
       delete users[action.userId];
       const newUsers = { ...users };
-      return { users: newUsers };  
+      return { ...state, users: newUsers };
+    case HIDE_MODAL:
+      return { ...state, modal: action.modal };
     default:
       return state;
   }
@@ -41,23 +51,28 @@ export const initUsers = (users) => {
   return { type: INIT_USERS, users };
 };
 
-export const addUser = (user) => {
-  return { type: ADD_USER, user };
+export const addUser = (user, modal) => {
+  return { type: ADD_USER, user, modal };
 };
 
-export const changePassword = (userId, password) => {
-  return { type: CHANGE_PASSWORD, userId, password }
+export const changePassword = (userId, password, modal) => {
+  return { type: CHANGE_PASSWORD, userId, password, modal }
 };
 
 export const deleteUser = (userId) => {
   return { type: DELETE_USER, userId };
 };
 
+export const hideModal = () => {
+  return { type: HIDE_MODAL, modal: { visibility: false, header: '', body: '', onOk: null } };
+};
+
 export const fetchUsers = () => {
   return (dispatch) => {
     return load_users()
     .then(response => response.json())
-    .then(users => dispatch(initUsers(users)));
+    .then(users => dispatch(initUsers(users)))
+    .catch(ex => console.log(ex.message));
   }
 };
 
@@ -66,11 +81,16 @@ export const addUserAsync = (user) => {
     return add_user(user).then(
       response => {
         if (response.status === 200) {
-          dispatch(addUser(user));
-          alert('Signup Succeeded. You may log in to reserve a seat and leave a comment');
+          const modal = {
+            visibility: true,
+            header: 'Signup Successful',
+            body: 'You may log in to reserve seats and leave comments.',
+            onOk: () => dispatch(hideModal())
+          };
+          dispatch(addUser(user, modal));
         }
       }
-    );
+    ).catch(ex => console.log(ex.message));
   };
 };
 
@@ -79,11 +99,16 @@ export const changePasswordAsync = (userId, password) => {
     return change_password(userId, password).then(
       (response) => {
         if (response.status === 200) {
-          dispatch(changePassword(userId, password));
-          alert('Password Changed Successfully!');
+          const modal = {
+            visibility: true,
+            header: 'Password Reset',
+            body: 'You have reset your password successfully.',
+            onOk: () => dispatch(hideModal())
+          };
+          dispatch(changePassword(userId, password, modal));
         }
       }
-    );
+    ).catch(ex => console.log(ex.message));
   };
 };
 
@@ -95,6 +120,6 @@ export const deleteUserAsync = (userId) => {
           dispatch(deleteUser(userId));
         }
       }
-    );
+    ).catch(ex => console.log(ex.message));
   }
 }

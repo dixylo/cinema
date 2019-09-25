@@ -2,13 +2,22 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { changePasswordAsync } from '../reducers/users';
 import { sessionToDateTime } from '../services/utils';
+import Modal from '../components/Modal';
+import { fetchOrders } from '../reducers/orders';
 
 class Profile extends Component {
   state = {
     isChangePasswordShown: false,
     currentpassword: '',
-    newpassword: ''
+    newpassword: '',
+    isModalVisible: false,
+    modalHeader: '',
+    modalBody: ''
   };
+
+  componentDidMount () {
+    this.props.initOrders();
+  }
 
   handleChangePasswordShown (e) {
     this.setState({ isChangePasswordShown: !this.state.isChangePasswordShown });
@@ -18,11 +27,9 @@ class Profile extends Component {
     const { currentpassword, newpassword } = this.state;
     const { userId, password } = this.props.currentUser.user;
     if (currentpassword !== password) {
-      alert('Current password is not correct!');
-      return;
+      return this.showModal('Reset Failed', 'Current password is not correct!');
     } else if (newpassword === '') {
-      alert('New password cannot be blank!');
-      return;
+      return this.showModal('Reset Failed', 'New password cannot be blank!');
     } else {
       this.props.changePassword(userId, newpassword);
     }
@@ -34,9 +41,21 @@ class Profile extends Component {
     });
   }
 
+  showModal = (header, body) => {
+    this.setState({
+      isModalVisible: true,
+      modalHeader: header,
+      modalBody: body
+    });
+  };
+
+  handleOk = () => {
+    this.setState({ isModalVisible: false });
+  };  
+
   render() {
-    const { userId, username, password } = this.props.currentUser.user;
-    const { orders } = this.props;
+    const { userId, username } = this.props.currentUser.user;
+    const { orders, modal } = this.props;
     const currentUserOrders = orders[userId];
     return (
       <div className='user'>
@@ -51,7 +70,7 @@ class Profile extends Component {
                 name="userid"
                 id="userid"
                 className='user-panel-input'
-                value={userId}
+                value={userId || ''}
                 disabled
               />
             </div>
@@ -62,11 +81,11 @@ class Profile extends Component {
                 name="username"
                 id="username"
                 className='user-panel-input'
-                value={username}
+                value={username || ''}
                 disabled
               />
             </div>
-            {this.state.isChangePasswordShown ?
+            {this.state.isChangePasswordShown &&
               <div>
                 <div>
                   <label htmlFor="currentpassword">Current Password: </label>
@@ -94,17 +113,6 @@ class Profile extends Component {
                 >
                   Save Change
                 </button>
-              </div> :
-              <div>
-                <label htmlFor="password">Password: </label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  className='user-panel-input'
-                  value={password}
-                  disabled
-                />
               </div>}
             <p
               className='change-password-toggle'
@@ -149,6 +157,12 @@ class Profile extends Component {
             </tbody>
           </table>}
         </div>
+        <Modal 
+          visibility={modal.visibility || this.state.isModalVisible}
+          header={modal.visibility ? modal.header : this.state.modalHeader}
+          body={modal.visibility ? modal.body : this.state.modalBody}
+          onOk={modal.visibility ? modal.onOk : this.handleOk}
+        />
       </div>
     );
   }
@@ -156,13 +170,15 @@ class Profile extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentUser: state.login,
-    orders: state.orders.orders
+    currentUser: state.user,
+    orders: state.orders.orders,
+    modal: state.users.modal
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    initOrders: () => dispatch(fetchOrders()),
     changePassword: (userId, password) => {
       dispatch(changePasswordAsync(userId, password));
     }
