@@ -6,7 +6,7 @@ const ADD_COMMENT = 'ADD_COMMENT';
 const DELETE_COMMENT = 'DELETE_COMMENT';
 
 // reducer
-export default function (state, action) {
+export default function comments (state, action) {
   if (!state) {
     state = { comments: {} }
   }
@@ -73,5 +73,5 @@ export const deleteCommentAsync = (movieId, commentKey) => {
         }
       }
     ).catch(ex => console.log(ex.message));
-  }
-}
+  };
+};

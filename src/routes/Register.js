@@ -40,7 +40,7 @@ class Register extends Component {
             username, email, password
           }, () => this.setState({ loading: false }))
         } else {
-          this.showModal('Invalid Email', 'This email has been used.');
+          this.showModal('Invalid Email', 'This email is invalid or has been used.');
           this.setState({ loading: false });
         }
       }).catch(err => {

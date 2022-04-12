@@ -1,31 +1,24 @@
 import React, { Component } from 'react';
 
 export default class About extends Component {
-
   render() {
     return (
       <div className='about'>
         <div>
           <h2>Milford Cinema</h2>
           <p>
-            Milford Cinema was founded in Northshore City in 1984, 
-            and has since been one of the largest cinemas in Auckland Region. 
-            It now has six rooms, two of which are IMAX rooms. Lorem ipsum dolor sit amet, 
-            consectetur adipiscing elit. Donec sit amet laoreet magna, quis vehicula sem. 
-            Integer hendrerit leo et neque vulputate, gravida suscipit risus 
-            blandit. Vestibulum non enim eget lectus pretium aliquam. 
-            Pellentesque scelerisque metus vitae magna viverra hendrerit. 
-            Nulla tempor varius eros. Curabitur dignissim vel magna 
-            non vulputate. Cras tristique arcu in mi iaculis sodales. 
-            Aliquam id mi id eros vestibulum finibus ut nec est. Nam 
-            nec metus tellus. Mauris scelerisque dignissim tellus sed 
-            posuere.
-            Integer vulputate mauris porta arcu interdum ullamcorper. 
-            Cras molestie purus tempor nisi ultrices mollis. Aenean 
-            id mi hendrerit, interdum tortor eu, interdum nunc. Ut 
-            blandit diam nec mi sollicitudin luctus. Aliquam erat 
-            volutpat. Integer pharetra accumsan ex sed aliquam. Etiam 
-            velit felis, auctor ac risus nec, semper porta tortor.
+            Milford Cinema was opened in Northshore City in 1984, 
+            and has since been one of the largest cinemas in the Auckland Region. 
+            After a major renovation in 2016, it now has six viewing rooms, 
+            which can accommodate up to 600 people in total 
+            and two of which are equipped with IMAX systems. Besides acoustically optimized room layout 
+            and ergonomically designed chairs to maximize the joy of movie-watching, 
+            we have also made every effort to make every detail perfect. 
+            Each viewing room is built with its own restroom, 
+            which is equipped with monitors showing the same movie synchronously 
+            to make sure you miss as little plot as possible. 
+            Along with the renovation, our website was redesigned as well to give you a smoother process of booking tickets online. 
+            With your everlasting support, we are commited to bringing you the best watching experience.
           </p>
         </div>
       </div>

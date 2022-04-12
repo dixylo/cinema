@@ -10,22 +10,26 @@
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  font-size: 16px;
 }
 
 /* Modal Content */
 .modal-content {
   position: relative;
-  background-color: #fefefe;
   margin: auto;
-  padding: 0;
-  border-radius: 6px;
+  padding: 60px;
   width: 80%;
+  height: 300px;
   max-width: 500px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
+  background-image: url('../assets/film_clip.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 /* Add Animation */
@@ -41,15 +45,15 @@
 
 /* The Close Button */
 .close {
-  color: white;
   float: right;
   font-size: 1.5em;
   font-weight: bold;
+  transition: 0.3s;
 }
 
 .close:hover,
 .close:focus {
-  color: #66cc66;
+  transform: scale(1.5);
   text-decoration: none;
   cursor: pointer;
 }
@@ -57,8 +61,6 @@
 .modal-header {
   padding: .1em .8em;
   border-radius: .25em .25em 0 0;
-  background-color: #4c994c;
-  color: white;
   text-align: left;
 }
 
@@ -76,8 +78,6 @@
 .modal-footer {
   padding: 0 .8em;
   border-radius: 0 0 .25em .25em;
-  background-color: #4c994c;
-  color: white;
   text-align: right;
 }
 
@@ -87,15 +87,15 @@
   margin: .5em;
   border: none;
   border-radius: .25em;
-  background-color: #fff;
-  color: #001900;
   font-size: 1em;
   cursor: pointer;
+  transition: 0.3s;
+  font-weight: bold;
+  font-family: inherit;
 }
 
 .modal-button:hover {
-  color: #fff;
-  background-color: #66cc66;
+  background-color: #ddd;
 }
 
 .modal-button:focus {

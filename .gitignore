@@ -15,6 +15,7 @@
 /build
 
 # firebase
+/.firebase
 /functions
 .firebaserc
 firebase.json

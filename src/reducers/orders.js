@@ -6,7 +6,7 @@ const ADD_ORDER = 'ADD_ORDER';
 const DELETE_ORDER = 'DELETE_ORDER';
 
 // reducer
-export default function (state, action) {
+export default function orders (state, action) {
   if (!state) {
     state = { orders: {} }
   }
@@ -73,5 +73,5 @@ export const deleteOrderAsync = (userId, orderKey) => {
         }
       }
     ).catch(ex => console.log(ex.message));
-  }
-}
+  };
+};

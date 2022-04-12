@@ -17,7 +17,6 @@ code {
   height: 51px;
   background-color: #3e3b49;
   overflow: hidden;
-  /* display: flex; */
 }
 
 .footer {
@@ -383,7 +382,7 @@ hr {
 }
 
 .comment:hover .comment-delete {
-  color: #00a3cf;
+  color: red;
 }
 
 .comment-delete {
@@ -397,7 +396,6 @@ hr {
 
 .comment p {
   margin: 0;
-  /*text-indent: 2em;*/
 }
 
 code {
@@ -603,10 +601,14 @@ code {
 
 .about div {
   margin: auto;
+  max-width: 800px;
   text-align: justify;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
 }
 
 .about h2 {
+  color: gray;
   text-align: center;
 }
 
@@ -614,28 +616,56 @@ code {
   width: 100%;
 }
 
-@media screen and (max-width: 1000px) {
+.about p::first-letter {
+  padding: 0 5px;
+  float: left;
+  color: #EC8540;
+  font-size: 50px;
+  line-height: 37px;
+}
+
+@media screen and (max-width: 1100px) {
   .about {
     padding: 180px 15vw;
-    font-size: 14px;
+    font-size: 15px;
+  }
+
+  .about p::first-letter {
+    font-size: 40px;
+    line-height: 34px;
   }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 880px) {
   .about {
     background-size: cover;
+    font-size: 14px;
+  }
+
+  .about p::first-letter {
+    line-height: 30px;
   }
 }
 
 @media screen and (max-width: 700px) {
   .about {
     padding: 180px 8vw;
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .about p {
     height: 250px;
     overflow: scroll;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .about {
+    font-size: 12px;
+  }
+
+  .about p::first-letter {
+    line-height: 27px;
   }
 }
 /* About Page Ends */
@@ -906,7 +936,6 @@ code {
 
 /* Create an active/current tablink class */
 .tablink-active {
-  /* background-color: #717171; */
   text-decoration: underline;
 }
 

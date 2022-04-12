@@ -14,9 +14,11 @@ const Modal = ({ visibility, header, body, onOk, onCancel }) => (
         </span>
         <h3>{header}</h3>
       </div>
+      <hr />
       <div className="modal-body">
         <p>{body}</p>
       </div>
+      <hr />
       <div className="modal-footer">
         <button
           className='modal-button'

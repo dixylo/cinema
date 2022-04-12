@@ -1,5 +1,4 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, fetchSignInMethodsForEmail } from 'firebase/auth';
 
 const LOG_IN = 'LOG_IN';
 const LOG_OUT = 'LOG_OUT';
@@ -75,8 +74,8 @@ const hideModal = () => {
 export const login = (user, callback) => {
   return dispatch => {
     const { email, password } = user;
-    return firebase.auth()
-      .signInWithEmailAndPassword(email, password)
+    const auth = getAuth();
+    return signInWithEmailAndPassword(auth, email, password)
       .then(userInfo => {
         const { uid, displayName, email } = userInfo.user;
         const modal = {
@@ -107,7 +106,8 @@ export const login = (user, callback) => {
 
 export const logout = (callback) => {
   return dispatch => {
-    return firebase.auth().signOut()
+    const auth = getAuth();
+    return signOut(auth)
       .then(() => {
         const modal = {
           visibility: true,
@@ -134,9 +134,9 @@ export const logout = (callback) => {
 export const signup = (user, callback) => {
   return dispatch => {
     const { username, email, password } = user;
-    return firebase.auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => firebase.auth().currentUser.updateProfile({
+    const auth = getAuth();
+    return createUserWithEmailAndPassword(auth, email, password)
+      .then(() => updateProfile(auth.currentUser, {
         displayName: username
       }))
       .then(() => {
@@ -167,8 +167,8 @@ export const signup = (user, callback) => {
 };
 
 export const checkEmailValidity = email => {
-  return firebase.auth()
-    .fetchSignInMethodsForEmail(email)
+  const auth = getAuth();
+  return fetchSignInMethodsForEmail(auth, email)
     .then(methods => {
       if (methods.length !== 0)
         return Promise.resolve(false);

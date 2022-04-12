@@ -28,7 +28,7 @@ class CommentListContainer extends Component {
 
     this.showModal(
       'Delete Comment',
-      'Are you sure to delete this comment?',
+      'Are you sure you want to delete this comment?',
       () => {
         this.setState({ isModalVisible: false });
         onDeleteComment && onDeleteComment(movieId, index);

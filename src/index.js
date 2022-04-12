@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import firebase from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import rootReducer from './reducers/index';
 import './index.css';
 import CinemaApp from './CinemaApp';
@@ -11,7 +11,7 @@ import * as serviceWorker from './serviceWorker';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
-const firebaseApiKey = process.env.REACT_APP_FIREBASE_API_KEY;
+const firebaseApiKey = "AIzaSyDmxrLYFCGu2LStoMvDcKxCMTbohn2FRaU";
 
 var config = {
   apiKey: firebaseApiKey,
@@ -19,7 +19,7 @@ var config = {
   databaseURL: "https://cinema-react.firebaseio.com",
   storageBucket: "cinema-react.appspot.com",
 };
-firebase.initializeApp(config);
+initializeApp(config);
 
 ReactDOM.render(
   <Provider store={store}>
