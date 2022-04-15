@@ -1,4 +1,4 @@
-import { load_comments, add_comment, delete_comment } from '../services/api';
+import { fetch_data, create_comment, delete_comment } from '../services/api';
 
 // action types
 const INIT_COMMENTS = 'INIT_COMMENTS';
@@ -25,7 +25,7 @@ export default function comments (state, action) {
         }
       };
     case DELETE_COMMENT:
-      delete comments[action.movieId][action.commentKey];
+      delete comments[action.movieId][action.commentId];
       const newComments = { ...comments };
       return { comments: newComments };
     default:
@@ -42,36 +42,13 @@ export const addComment = (movieId, key, comment) => {
   return { type: ADD_COMMENT, movieId, key, comment };
 };
 
-export const deleteComment = (movieId, commentKey) => {
-  return { type: DELETE_COMMENT, movieId, commentKey };
+export const deleteComment = (movieId, commentId) => {
+  return { type: DELETE_COMMENT, movieId, commentId };
 };
 
-export const fetchComments = () => {
-  return (dispatch) => {
-    return load_comments()
-      .then(response => response.json())
-      .then(comments => dispatch(initComments(comments)))
-      .catch(ex => console.log(ex.message));
-  };
-};
+// thunk functions
+export const fetchComments = () => (dispatch) => fetch_data('comments', dispatch, initComments);
 
-export const addCommentAsync = (movieId, comment) => {
-  return (dispatch) => {
-    return add_comment(movieId, comment)
-      .then(response => response.json())
-      .then(key => dispatch(addComment(movieId, key, comment)))
-      .catch(ex => console.log(ex.message));
-  };
-};
+export const addCommentAsync = (movieId, comment) => () => create_comment(movieId, comment);
 
-export const deleteCommentAsync = (movieId, commentKey) => {
-  return (dispatch) => {
-    return delete_comment(movieId, commentKey).then(
-      (response) => {
-        if (response.status === 200) {
-          dispatch(deleteComment(movieId, commentKey));
-        }
-      }
-    ).catch(ex => console.log(ex.message));
-  };
-};
+export const deleteCommentAsync = (movieId, commentId) => () => delete_comment(movieId, commentId);

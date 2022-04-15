@@ -831,6 +831,10 @@ code {
   outline: none;
 }
 
+.user-panel-input[name=newpassword] {
+  border-bottom: 1px solid black;
+}
+
 .user-panel-button {
   width: 60%;
   height: 2em;

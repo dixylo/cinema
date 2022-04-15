@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { changePasswordAsync } from '../reducers/users';
+import { changePassword } from '../reducers/user';
 import { sessionToDateTime } from '../services/utils';
 import Modal from '../components/Modal';
-import { fetchOrders } from '../reducers/orders';
+import { fetchUserOrders } from '../reducers/orders';
 
 class Profile extends Component {
   state = {
@@ -16,22 +16,23 @@ class Profile extends Component {
   };
 
   componentDidMount () {
-    this.props.initOrders();
+    this.props.initUserOrders(this.props.currentUser.user.userId);
   }
 
-  handleChangePasswordShown (e) {
+  handleChangePasswordShown () {
     this.setState({ isChangePasswordShown: !this.state.isChangePasswordShown });
   }
 
   handlePasswordChange () {
     const { currentpassword, newpassword } = this.state;
-    const { userId, password } = this.props.currentUser.user;
-    if (currentpassword !== password) {
-      return this.showModal('Reset Failed', 'Current password is not correct!');
-    } else if (newpassword === '') {
+    // const { password } = this.props.currentUser.user;
+    // if (currentpassword !== password) {
+    //   return this.showModal('Reset Failed', 'Current password is not correct!');
+    // } else 
+    if (newpassword === '') {
       return this.showModal('Reset Failed', 'New password cannot be blank!');
     } else {
-      this.props.changePassword(userId, newpassword);
+      this.props.changePassword(newpassword);
     }
   }
 
@@ -54,26 +55,15 @@ class Profile extends Component {
   };  
 
   render() {
-    const { userId, username } = this.props.currentUser.user;
+    const { userId, username, email } = this.props.currentUser.user;
     const { orders, modal } = this.props;
-    const currentUserOrders = orders[userId];
+    const currentUserOrders = orders && orders[userId];
     return (
       <div className='user'>
         <div className="profile">
           <p><b>User Information</b></p>
           <hr className='user-panel-hr' />
           <div className='user-panel-div'>
-            <div>
-              <label htmlFor="userid">User ID: </label>
-              <input
-                type="text"
-                name="userid"
-                id="userid"
-                className='user-panel-input'
-                value={userId || ''}
-                disabled
-              />
-            </div>
             <div>
               <label htmlFor="username">Username: </label>
               <input
@@ -85,9 +75,20 @@ class Profile extends Component {
                 disabled
               />
             </div>
+            <div>
+              <label htmlFor="email">User Email: </label>
+              <input
+                type="text"
+                name="email"
+                id="email"
+                className='user-panel-input'
+                value={email || ''}
+                disabled
+              />
+            </div>
             {this.state.isChangePasswordShown &&
               <div>
-                <div>
+                {/* <div>
                   <label htmlFor="currentpassword">Current Password: </label>
                   <input
                     type="password"
@@ -96,7 +97,7 @@ class Profile extends Component {
                     className='user-panel-input'
                     onChange={this.handlePasswordInput.bind(this)}
                   />
-                </div>
+                </div> */}
                 <div>
                   <label htmlFor="newpassword">New Password: </label>
                   <input
@@ -172,15 +173,15 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.user,
     orders: state.orders.orders,
-    modal: state.users.modal
+    modal: state.user.modal
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initOrders: () => dispatch(fetchOrders()),
-    changePassword: (userId, password) => {
-      dispatch(changePasswordAsync(userId, password));
+    initUserOrders: (userId) => dispatch(fetchUserOrders(userId)),
+    changePassword: (newPassword) => {
+      dispatch(changePassword(newPassword));
     }
   };
 };

@@ -1,106 +1,71 @@
-export async function load_rooms () {
-  return fetch('https://cinema-react.firebaseio.com/cinema/rooms.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7');
+import { getDatabase, onValue, ref, push, set, update, remove } from 'firebase/database';
+
+// general data
+export function fetch_data (path, dispatch, actionCreator) {
+  const db = getDatabase();
+  onValue(ref(db, `/cinema/${path}`), (snapshot) => {
+    const data = snapshot.val();
+    dispatch(actionCreator(data));
+  }, (error) => console.log(error));
 }
 
-export async function load_users () {
-  return fetch('https://cinema-react.firebaseio.com/cinema/users.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7');
+// comments
+export function create_comment (movieId, comment) {
+  const db = getDatabase();
+  const commentListRef = ref(db, `/cinema/comments/${movieId}`);
+  const newCommentRef = push(commentListRef);
+  set(newCommentRef, comment).catch((error) => console.log(error));
 }
 
-export async function load_movies () {
-  return fetch('https://cinema-react.firebaseio.com/cinema/movies.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7');
+export function delete_comment (movieId, commentId) {
+  const db = getDatabase();
+  remove(ref(db, `/cinema/comments/${movieId}/${commentId}`)).catch((error) => console.log(error));
 }
 
-export async function load_comments () {
-  return fetch('https://cinema-react.firebaseio.com/cinema/comments.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7');
+// orders
+export function fetch_user_orders (userId, dispatch, actionCreator) {
+  const db = getDatabase();
+  onValue(ref(db, `/cinema/orders/${userId}`), (snapshot) => {
+    const data = { [userId]: snapshot.val() };
+    dispatch(actionCreator(data));
+  }, (error) => console.log(error));
 }
 
-export async function load_orders () {
-  return fetch('https://cinema-react.firebaseio.com/cinema/orders.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7');
+export function create_order (userId, order) {
+  const db = getDatabase();
+  const orderListRef = ref(db, `/cinema/orders/${userId}`);
+  const newOrderRef = push(orderListRef);
+  set(newOrderRef, order).catch((error) => console.log(error));
 }
 
-export async function query_movie (movieId) {
-  return fetch(`https://cinema-react.firebaseio.com/cinema/movies/${movieId}.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7`);
+export function delete_order (userId, orderId) {
+  const db = getDatabase();
+  remove(ref(db, `/cinema/orders/${userId}/${orderId}`)).catch((error) => console.log(error));
 }
 
-export async function query_comments (movieId) {
-  return fetch(`https://cinema-react.firebaseio.com/cinema/comments/${movieId}.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7`);
-}
+// seats
+export function toggle_seats (coors, status) {
+  const db = getDatabase();
 
-export async function update_seats (coors, status) {
-  let coorsObject = {};
+  let updates = {};
   coors.forEach(coor => {
     const { roomIndex, rowIndex, seatIndex, session } = coor;
-    coorsObject = {
-      ...coorsObject, [`${roomIndex}/rows/${rowIndex}/seats/${seatIndex}/status/${session}`]: status
+    updates = {
+      ...updates, [`/cinema/rooms/${roomIndex}/rows/${rowIndex}/seats/${seatIndex}/status/${session}`]: status
     }
   });
-  const jsonCoors = JSON.stringify(coorsObject);
-  return fetch('https://cinema-react.firebaseio.com/cinema/rooms.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7', {
-    method: 'PATCH',
-    body: jsonCoors
-  });
+
+  return update(ref(db), updates);
 }
 
-export async function cancel_reservation (rooms) {
-  const jsonRooms = JSON.stringify(rooms);
-  return fetch('https://cinema-react.firebaseio.com/cinema.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7', {
-    method: 'PATCH',
-    body: jsonRooms
-  });
+// movies
+export function delete_movie (movieId) {
+  const db = getDatabase();
+  remove(ref(db, `/cinema/movies/${movieId}`)).catch((error) => console.log(error));
 }
 
-export async function add_user (user) {
-  const jsonUser = JSON.stringify(user);
-  return fetch(`https://cinema-react.firebaseio.com/cinema/users/${user.userId}.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7`, {
-    method: 'PATCH',
-    body: jsonUser
-  })
-}
-
-export async function add_order (userId, order) {
-  const jsonOrder = JSON.stringify(order);
-  return fetch(`https://cinema-react.firebaseio.com/cinema/orders/${userId}.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7`, {
-    method: 'POST',
-    body: jsonOrder
-  });
-}
-
-export async function add_comment (movieId, comment) {
-  const jsonComment = JSON.stringify(comment);
-  return fetch(`https://cinema-react.firebaseio.com/cinema/comments/${movieId}.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7`, {
-    method: 'POST',
-    body: jsonComment
-  })
-}
-
-export async function change_password (userId, password) {
-  const jsonPassword = JSON.stringify({ password });
-  return fetch(`https://cinema-react.firebaseio.com/cinema/users/${userId}.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7`, {
-    method: 'PATCH',
-    body: jsonPassword
-  });
-}
-
-export async function delete_comment (movieId, commentKey) {
-  return fetch(`https://cinema-react.firebaseio.com/cinema/comments/${movieId}/${commentKey}.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7`, {
-    method: 'DELETE',
-  })
-}
-
-export async function delete_order (userId, orderKey) {
-  return fetch(`https://cinema-react.firebaseio.com/cinema/orders/${userId}/${orderKey}.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7`, {
-    method: 'DELETE',
-  })
-}
-
-export async function delete_user (userId) {
-  return fetch(`https://cinema-react.firebaseio.com/cinema/users/${userId}.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7`, {
-    method: 'DELETE',
-  })
-}
-
-export async function delete_movie (movieId) {
-  return fetch(`https://cinema-react.firebaseio.com/cinema/movies/${movieId}.json?auth=VCh3xP4hio5tANuQr63ST9oCdM4UiDW6KPRomez7`, {
-    method: 'DELETE',
-  })
+// users
+export function delete_user (userId) {
+  const db = getDatabase();
+  remove(ref(db, `/cinema/users/${userId}`)).catch((error) => console.log(error));
 }

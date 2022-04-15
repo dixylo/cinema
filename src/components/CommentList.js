@@ -5,16 +5,16 @@ import PropTypes from 'prop-types';
 class CommentList extends Component {
   static propTypes = {
     comments: PropTypes.object,
-    onDeleteComment: PropTypes.func
+    onCommentDelete: PropTypes.func
   };
 
   static defaultProps = {
     comments: {}
   };
   
-  handleDeleteComment (index) {
-    if (this.props.onDeleteComment) {
-      this.props.onDeleteComment(index);
+  handleCommentDelete (index) {
+    if (this.props.onCommentDelete) {
+      this.props.onCommentDelete(index);
     }
   }
 
@@ -28,7 +28,7 @@ class CommentList extends Component {
           key={i}
           index={key}
           currentUser={currentUser}
-          onDeleteComment={this.handleDeleteComment.bind(this)}
+          onCommentDelete={this.handleCommentDelete.bind(this)}
         />
         )}
       </div>

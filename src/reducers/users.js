@@ -1,4 +1,4 @@
-import { load_users, add_user, change_password, delete_user } from '../services/api';
+import { fetch_data, delete_user } from '../services/api';
 
 const INIT_USERS = 'INIT_USERS';
 const ADD_USER = 'ADD_USER';
@@ -67,59 +67,6 @@ export const hideModal = () => {
   return { type: HIDE_MODAL, modal: { visibility: false, header: '', body: '', onOk: null } };
 };
 
-export const fetchUsers = () => {
-  return (dispatch) => {
-    return load_users()
-    .then(response => response.json())
-    .then(users => dispatch(initUsers(users)))
-    .catch(ex => console.log(ex.message));
-  }
-};
+export const fetchUsers = () => (dispatch) => fetch_data('users', dispatch, initUsers);
 
-export const addUserAsync = (user) => {
-  return (dispatch) => {
-    return add_user(user).then(
-      response => {
-        if (response.status === 200) {
-          const modal = {
-            visibility: true,
-            header: 'Signup Successful',
-            body: 'You may log in to reserve seats and leave comments.',
-            onOk: () => dispatch(hideModal())
-          };
-          dispatch(addUser(user, modal));
-        }
-      }
-    ).catch(ex => console.log(ex.message));
-  };
-};
-
-export const changePasswordAsync = (userId, password) => {
-  return (dispatch) => {
-    return change_password(userId, password).then(
-      (response) => {
-        if (response.status === 200) {
-          const modal = {
-            visibility: true,
-            header: 'Password Reset',
-            body: 'You have reset your password successfully.',
-            onOk: () => dispatch(hideModal())
-          };
-          dispatch(changePassword(userId, password, modal));
-        }
-      }
-    ).catch(ex => console.log(ex.message));
-  };
-};
-
-export const deleteUserAsync = (userId) => {
-  return (dispatch) => {
-    return delete_user(userId).then(
-      (response) => {
-        if (response.status === 200) {
-          dispatch(deleteUser(userId));
-        }
-      }
-    ).catch(ex => console.log(ex.message));
-  }
-}
+export const deleteUserAsync = (userId) => () => delete_user(userId);

@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { sessionToDateTime } from '../services/utils';
-import { deleteOrderAsync, fetchOrders } from '../reducers/orders';
+import { fetchOrders, deleteOrderAsync } from '../reducers/orders';
+import { cancelReservationAsync } from '../reducers/rooms';
 
 class OrderList extends Component {
   componentDidMount () {
     this.props.initOrders();
   }
 
-  handleClick (userId, orderKey) {
+  handleClick (userId, orderId, order) {
     if (this.props.onDelete) {
-      this.props.onDelete(userId, orderKey);
+      this.props.onDelete(userId, orderId, order);
     }
   }
 
@@ -33,8 +34,8 @@ class OrderList extends Component {
         <tbody>
           {Object.keys(orders).map(userId =>
             orders[userId] && Object.keys(orders[userId]).map(
-              (orderKey, i) => {
-                const order = orders[userId][orderKey];
+              (orderId, i) => {
+                const order = orders[userId][orderId];
                 return (
                   <tr key={i}>
                     <td>{userId}</td>
@@ -59,7 +60,7 @@ class OrderList extends Component {
                     <td>
                       <span
                         className='admin-delete'
-                        onClick={this.handleClick.bind(this, userId, orderKey)}>
+                        onClick={this.handleClick.bind(this, userId, orderId, order)}>
                         Delete
                       </span>
                     </td>
@@ -78,7 +79,10 @@ const mapStateToProps = state => ({ orders: state.orders.orders });
 
 const mapDispatchToProps = dispatch => ({
   initOrders: () => dispatch(fetchOrders()),
-  onDelete: (userId, orderKey) => dispatch(deleteOrderAsync(userId, orderKey))
+  onDelete: (userId, orderId, order) => {
+    dispatch(deleteOrderAsync(userId, orderId));
+    dispatch(cancelReservationAsync(order));
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderList);

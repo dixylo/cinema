@@ -2,37 +2,25 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { fetchMovies } from '../reducers/movies';
 import CommentModule from '../containers/CommentModule';
-import { queryMovie } from '../services/utils';
 
 class Movie extends Component {
   static propTypes = {
     movies: PropTypes.array
   }
 
-  constructor (props) {
-    super(props);
-    const { match, movies } = this.props;
-    const { movieId, roomId } = match.params;
-    const movie = movies.find(item => item && (item.movieId === movieId));
-    this.state = {
-      movieId,
-      roomId,
-      movie
-    };
-  }
-
-  componentWillMount () {
-    const { movieId, movie } = this.state;
-    if (!movie) {
-      queryMovie(movieId).then(movie => {
-        this.setState({ movie })
-      });
+  componentDidMount () {
+    const { movies, initMovies } = this.props;
+    if (!movies.length) {
+      initMovies();
     }
   }
 
   render() {
-    const { movieId, roomId, movie } = this.state;
+    const { match, movies } = this.props;
+    const { movieId, roomId } = match.params;
+    const movie = movies.find(item => item && (item.movieId === movieId));
     return (
       <div className='container'>
         <div className='metadata-comment'>
@@ -75,7 +63,13 @@ class Movie extends Component {
 const mapStateToProps = (state) => {
   return {
     movies: state.movies.movies
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps)(Movie);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    initMovies: () => dispatch(fetchMovies())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Movie);

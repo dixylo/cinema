@@ -1,4 +1,4 @@
-import { load_rooms, update_seats } from '../services/api';
+import { fetch_data, toggle_seats } from '../services/api';
 import { seatIdToIndices } from '../services/utils';
 
 const INIT_ROOMS = 'INIT_ROOMS';
@@ -190,33 +190,25 @@ export const hideModal = () => {
   return { type: HIDE_MODAL, modal: { visibility: false, header: '', body: '', onOk: null } };
 };
 
-export const fetchRooms = () => {
-  return (dispatch) => {
-    return load_rooms()
-      .then(response => response.json())
-      .then(rooms => dispatch(initRooms(rooms)))
-      .catch(ex => console.log(ex.message));
-  };
-};
+// thunk functions
+export const fetchRooms = () => (dispatch) => fetch_data('rooms', dispatch, initRooms);
 
 export const reserveSeatsAsync = (order) => {
   return (dispatch, getState) => {
     const state = getState().rooms;
     const rooms = updateRoomsWithReservedSeats(state, order);
     const coors = orderToCoordinates(order);
-    return update_seats(coors, RESERVED).then(
-      response => {
-        if (response.status === 200) {
-          const modal = {
-            visibility: true,
-            header: 'Reservation Confirmed',
-            body: 'You have reserved the seat(s) successfully.',
-            onOk: () => dispatch(hideModal())
-          };
-          dispatch(reserveSeats(rooms, modal));
-        }
-      }
-    ).catch(ex => console.log(ex.message));
+    return toggle_seats(coors, RESERVED)
+      .then(() => {
+        const modal = {
+          visibility: true,
+          header: 'Reservation Confirmed',
+          body: 'You have reserved the seat(s) successfully.',
+          onOk: () => dispatch(hideModal())
+        };
+        dispatch(reserveSeats(rooms, modal));
+      })
+      .catch(ex => console.log(ex.message));
   };
 };
 
@@ -225,18 +217,16 @@ export const cancelReservationAsync = (order) => {
     const state = getState().rooms;
     const rooms = updateRoomsWithCanceledReservation(state, order);
     const coors = orderToCoordinates(order);
-    return update_seats(coors, AVAILABLE).then(
-      response => {
-        if (response.status === 200) {
-          const modal = {
-            visibility: true,
-            header: 'Reservation Canceled',
-            body: 'You have canceled the seat(s) successfully.',
-            onOk: () => dispatch(hideModal())
-          };
-          dispatch(cancelReservation(rooms, modal));
-        }
-      }
-    ).catch(ex => console.log(ex.message));
+    return toggle_seats(coors, AVAILABLE)
+      .then(() => {
+        const modal = {
+          visibility: true,
+          header: 'Reservation Canceled',
+          body: 'You have canceled the seat(s) successfully.',
+          onOk: () => dispatch(hideModal())
+        };
+        dispatch(cancelReservation(rooms, modal));
+      })
+      .catch(ex => console.log(ex.message));
   };
 };

@@ -8,7 +8,7 @@ import Modal from '../components/Modal';
 class CommentListContainer extends Component {
   static propTypes = {
     initComments: PropTypes.func,
-    onDeleteComment: PropTypes.func
+    onCommentDelete: PropTypes.func
   };
 
   state = {
@@ -19,19 +19,19 @@ class CommentListContainer extends Component {
     modalCallbackOnCancel: null
   };
   
-  componentWillMount () {
+  componentDidMount () {
     this.props.initComments();
   };
 
-  handleDeleteComment = index => {
-    const { movieId, onDeleteComment } = this.props;
+  handleCommentDelete = index => {
+    const { movieId, onCommentDelete } = this.props;
 
     this.showModal(
       'Delete Comment',
       'Are you sure you want to delete this comment?',
       () => {
         this.setState({ isModalVisible: false });
-        onDeleteComment && onDeleteComment(movieId, index);
+        onCommentDelete && onCommentDelete(movieId, index);
       },
       () => this.setState({ isModalVisible: false })
     )
@@ -54,7 +54,7 @@ class CommentListContainer extends Component {
         <CommentList
           comments={comments[movieId]}
           currentUser={currentUser}
-          onDeleteComment={this.handleDeleteComment}
+          onCommentDelete={this.handleCommentDelete}
         />
         <Modal
           visibility={this.state.isModalVisible}
@@ -71,7 +71,7 @@ class CommentListContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     comments: state.comments.comments,
-    currentUser: state.user.user.username
+    currentUser: state.user
   };
 };
 
@@ -80,7 +80,7 @@ const mapDispatchToProps = (dispatch) => {
     initComments: () => {
       dispatch(fetchComments())
     },
-    onDeleteComment: (movieId, commentKey) => {
+    onCommentDelete: (movieId, commentKey) => {
       dispatch(deleteCommentAsync(movieId, commentKey))
     }
   };

@@ -1,4 +1,4 @@
-import { load_movies, delete_movie } from '../services/api';
+import { fetch_data, delete_movie } from '../services/api';
 
 const INIT_MOVIES = 'INIT_MOVIES';
 const DELETE_MOVIE = 'DELETE_MOVIE';
@@ -30,23 +30,6 @@ export const deleteMovie = (movieId) => {
   return { type: DELETE_MOVIE, movieId };
 };
 
-export const fetchMovies = () => {
-  return dispatch => {
-    return load_movies()
-    .then(response => response.json())
-    .then(movies => dispatch(initMovies(movies)))
-    .catch(ex => console.log(ex.message));
-  }
-}
+export const fetchMovies = () => (dispatch) => fetch_data('movies', dispatch, initMovies);
 
-export const deleteMovieAsync = (movieId) => {
-  return (dispatch) => {
-    return delete_movie(movieId).then(
-      (response) => {
-        if (response.status === 200) {
-          dispatch(deleteMovie(movieId));
-        }
-      }
-    ).catch(ex => console.log(ex.message));
-  }
-}
+export const deleteMovieAsync = (movieId) => () => delete_movie(movieId);

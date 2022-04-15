@@ -1,4 +1,4 @@
-import { load_orders, add_order, delete_order } from '../services/api';
+import { fetch_data, create_order, delete_order, fetch_user_orders } from '../services/api';
 
 // action types
 const INIT_ORDERS = 'INIT_ORDERS';
@@ -46,32 +46,11 @@ export const deleteOrder = (userId, orderKey) => {
   return { type: DELETE_ORDER, userId, orderKey };
 };
 
-export const fetchOrders = () => {
-  return dispatch => {
-    return load_orders()
-      .then(response => response.json())
-      .then(orders => dispatch(initOrders(orders)))
-      .catch(ex => console.log(ex.message));
-  };
-};
+// thunk functions
+export const fetchOrders = () => (dispatch) => fetch_data('orders', dispatch, initOrders);
 
-export const addOrderAsync = (userId, order) => {
-  return (dispatch) => {
-    return add_order(userId, order)
-      .then(response => response.json())
-      .then(key => dispatch(addOrder(userId, key, order)))
-      .catch(ex => console.log(ex.message));
-  };
-};
+export const fetchUserOrders = (userId) => (dispatch) => fetch_user_orders(userId, dispatch, initOrders);
 
-export const deleteOrderAsync = (userId, orderKey) => {
-  return (dispatch) => {
-    return delete_order(userId, orderKey).then(
-      (response) => {
-        if (response.status === 200) {
-          dispatch(deleteOrder(userId, orderKey));
-        }
-      }
-    ).catch(ex => console.log(ex.message));
-  };
-};
+export const addOrderAsync = (userId, order) => () => create_order(userId, order);
+
+export const deleteOrderAsync = (userId, orderKey) => () => delete_order(userId, orderKey);

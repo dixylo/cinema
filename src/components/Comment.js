@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 export default class Comment extends Component {
   static propTypes = {
     comment: PropTypes.object.isRequired,
-    onDeleteComment: PropTypes.func,
+    onCommentDelete: PropTypes.func,
     index: PropTypes.string
   };
 
@@ -13,7 +13,7 @@ export default class Comment extends Component {
     this.state = { timeString: ''};
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this._updateTimeString();
     this._timer = setInterval(
       this._updateTimeString.bind(this),
@@ -54,16 +54,16 @@ export default class Comment extends Component {
       .replace(/`([\S\s]+?)`/g, '<code>$1</code>');
   }
 
-  handleDeleteComment () {
-    if (this.props.onDeleteComment) {
-      this.props.onDeleteComment(this.props.index)
+  handleCommentDelete () {
+    if (this.props.onCommentDelete) {
+      this.props.onCommentDelete(this.props.index)
     }
   }
 
   render () {
     const { currentUser, comment } = this.props;
     const isCurrentUsersCommentOrAdminBrowsing
-    = currentUser === comment.username || currentUser === 'Admin';
+    = currentUser.user.userId === comment.uid || currentUser.hasAdminLoggedIn;
     return (
       <div className='comment'>
         <div className='comment-user'>
@@ -77,7 +77,7 @@ export default class Comment extends Component {
         </span>
           {isCurrentUsersCommentOrAdminBrowsing &&
           <span
-            onClick={this.handleDeleteComment.bind(this)}
+            onClick={this.handleCommentDelete.bind(this)}
             className='comment-delete'
           >
             Delete

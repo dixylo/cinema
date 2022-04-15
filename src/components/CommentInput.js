@@ -3,19 +3,20 @@ import PropTypes from 'prop-types';
 
 export default class CommentInput extends Component {
   static propTypes = {
-    username: PropTypes.any,
+    currentUser: PropTypes.any,
     onSubmit: PropTypes.func,
     onUserNameInputBlur: PropTypes.func
   };
 
   static defaultProps = {
-    username: ''
+    currentUser: null
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      username: props.username,
+      username: props.currentUser.username,
+      uid: props.currentUser.userId,
       content: ''
     };
   }
@@ -27,10 +28,11 @@ export default class CommentInput extends Component {
   }
 
   handleSubmit () {
-    const { username, content } = this.state;
+    const { username, uid, content } = this.state;
     if (this.props.onSubmit) {
       this.props.onSubmit({
         username,
+        uid,
         content,
         postTime: +new Date()
       });

@@ -1,4 +1,4 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, fetchSignInMethodsForEmail } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updatePassword, updateProfile, fetchSignInMethodsForEmail } from 'firebase/auth';
 
 const LOG_IN = 'LOG_IN';
 const LOG_OUT = 'LOG_OUT';
@@ -178,4 +178,30 @@ export const checkEmailValidity = email => {
     .catch(err => {
       console.log(err.message);
     });
+};
+
+export const changePassword = (newPassword) => {
+  return (dispatch) => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+  
+    return updatePassword(user, newPassword).then(() => {
+      const modal = {
+        visibility: true,
+        header: 'Password Updated',
+        body: 'Please log in with your new password next time.',
+        onOk: () => dispatch(hideModal())
+      };
+      dispatch(showModal(modal));
+    }).catch((error) => {
+      console.log(error);
+      const modal = {
+        visibility: true,
+        header: 'Password Update Failed',
+        body: 'Please retry later.',
+        onOk: () => dispatch(hideModal())
+      };
+      dispatch(showModal(modal));
+    });
+  };
 };

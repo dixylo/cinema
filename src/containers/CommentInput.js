@@ -16,7 +16,7 @@ class CommentInputContainer extends Component {
     modalBody: ''
   };
 
-  handleSubmitComment (comment) {
+  handleCommentSubmit (comment) {
     const { currentUser, movieId, onSubmit } = this.props;
     if (!currentUser.hasUserLoggedIn) return this.showModal('Permission Needed', 'Please log in to comment.');
     if (!comment) return;
@@ -41,8 +41,8 @@ class CommentInputContainer extends Component {
     return (
       <div>
         <CommentInput
-          username={this.props.currentUser.user.username}
-          onSubmit={this.handleSubmitComment.bind(this)}
+          currentUser={this.props.currentUser.user}
+          onSubmit={this.handleCommentSubmit.bind(this)}
         />
         <Modal 
           visibility={this.state.isModalVisible}
