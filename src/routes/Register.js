@@ -38,7 +38,7 @@ class Register extends Component {
         if (isValid) {
           this.props.signup({
             username, email, password
-          }, () => this.setState({ loading: false }))
+          }, this.props.history, () => this.setState({ loading: false }))
         } else {
           this.showModal('Invalid Email', 'This email is invalid or has been used.');
           this.setState({ loading: false });

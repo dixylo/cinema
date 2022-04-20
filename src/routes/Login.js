@@ -34,7 +34,7 @@ class Login extends Component {
     }
 
     this.setState({ loading: true }, () => {
-      this.props.login({ email, password }, () => {
+      this.props.login({ email, password }, this.props.history, () => {
         this.setState({ loading: false });
       });
     });

@@ -359,9 +359,13 @@ hr {
   position: relative;
   display: flex;
   border-bottom: 1px solid #999;
-  margin-bottom: 10px;
-  padding-bottom: 0px;
+  padding: 10px 10px 30px;
   min-height: 50px;
+  transition: 0.2s;
+}
+
+.comment:hover {
+  background-color: rgba(255, 255, 255, 0.4);
 }
 
 .comment .comment-user {
@@ -387,8 +391,8 @@ hr {
 
 .comment-delete {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 5px;
+  top: 10px;
   color: transparent;
   font-size: 12px;
   cursor: pointer;

@@ -71,7 +71,7 @@ const hideModal = () => {
   return { type: HIDE_MODAL, modal: { visibility: false, header: '', body: '', onOk: null } };
 };
 
-export const login = (user, callback) => {
+export const login = (user, navigation, callback) => {
   return dispatch => {
     const { email, password } = user;
     const auth = getAuth();
@@ -82,7 +82,10 @@ export const login = (user, callback) => {
           visibility: true,
           header: 'Login Successful',
           body: 'You may reserve seats and leave comments now.',
-          onOk: () => dispatch(hideModal())
+          onOk: () => {
+            navigation.goBack();
+            dispatch(hideModal());
+          }
         };
         dispatch(loginSync({
           userId: uid,
@@ -131,23 +134,29 @@ export const logout = (callback) => {
   };
 };
 
-export const signup = (user, callback) => {
+export const signup = (user, navigation, callback) => {
   return dispatch => {
     const { username, email, password } = user;
     const auth = getAuth();
     return createUserWithEmailAndPassword(auth, email, password)
-      .then(() => updateProfile(auth.currentUser, {
-        displayName: username
-      }))
-      .then(() => {
+      .then((userInfo) => {
+        updateProfile(auth.currentUser, {
+          displayName: username
+        });
+        return userInfo;
+      })
+      .then((userInfo) => {
         const modal = {
           visibility: true,
           header: 'Signup Successful',
           body: 'You may reserve seats and leave comments now.',
-          onOk: () => dispatch(hideModal())
+          onOk: () => {
+            navigation.goBack();
+            dispatch(hideModal());
+          }
         };
         dispatch(loginSync({
-          userId: user.uid,
+          userId: userInfo.user.uid,
           username,
           email
         }, modal));
