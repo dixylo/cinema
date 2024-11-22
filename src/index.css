@@ -594,9 +594,11 @@ code {
 
 /* About Page Starts */
 .about {
+  margin: 0 auto;
   max-width: 1440px;
   min-height: 100vh;
   padding: 180px;
+  padding-top: 30vh;
   background-image: url('./assets/about.png');
   background-position: center;
   background-repeat: no-repeat;
@@ -630,7 +632,7 @@ code {
 
 @media screen and (max-width: 1100px) {
   .about {
-    padding: 180px 15vw;
+    padding: 30vh 15vw 180px;
     font-size: 15px;
   }
 
@@ -653,7 +655,7 @@ code {
 
 @media screen and (max-width: 700px) {
   .about {
-    padding: 180px 8vw;
+    padding: 30vh 8vw 180px;
     font-size: 13px;
   }
 
@@ -676,6 +678,7 @@ code {
 
 /* Contact Page Starts */
 .contact {
+  margin: 0 auto;
   max-width: 1440px;
   min-height: 100vh;
   padding: 13vh 14vw;
@@ -746,6 +749,7 @@ code {
 /* User Pages Start */
 .user {
   position: relative;
+  margin: 0 auto;
   max-width: 1440px;
   min-height: 100vh;
   background-image: url('./assets/camera.png');
